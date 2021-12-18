@@ -3,7 +3,8 @@
 using namespace std;
 
 void ProjectEuler001();
+void ProjectEuler002();
 
 int main(){
-    ProjectEuler001();
+    ProjectEuler002();
 }
