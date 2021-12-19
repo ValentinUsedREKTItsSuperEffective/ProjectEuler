@@ -4,8 +4,9 @@ using namespace std;
 
 void ProjectEuler001();
 void ProjectEuler002();
+void ProjectEuler003();
 void ProjectEuler011();
 
 int main(){
-    ProjectEuler011();
+    ProjectEuler003();
 }
