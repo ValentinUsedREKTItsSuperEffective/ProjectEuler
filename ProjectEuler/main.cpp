@@ -10,7 +10,8 @@ void ProjectEuler005();
 void ProjectEuler011();
 void ProjectEuler012();
 void ProjectEuler012_Naive();
+void ProjectEuler013();
 
 int main(){
-    ProjectEuler005();
+    ProjectEuler013();
 }
