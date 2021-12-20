@@ -35,6 +35,7 @@
 		<Unit filename="ProjectEuler001.cpp" />
 		<Unit filename="ProjectEuler002.cpp" />
 		<Unit filename="ProjectEuler003.cpp" />
+		<Unit filename="ProjectEuler004.cpp" />
 		<Unit filename="ProjectEuler011.cpp" />
 		<Unit filename="ProjectEuler012.cpp" />
 		<Unit filename="main.cpp" />
