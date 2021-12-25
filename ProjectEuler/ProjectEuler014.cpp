@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <array>
 
 using namespace std;
 
@@ -135,4 +136,74 @@ void ProjectEuler014(){
     }
 
     return;
+}
+
+/*
+    Array part - Seg fault
+
+    Idea is to [number] = distanceToZero
+    [next] -> 3n + 1 or n/2
+    if ([number] == 0)
+        look for [next]
+*/
+const unsigned int arraySize = 5000001;
+
+unsigned int ComputeDistance_014(array<unsigned int, arraySize>& distances, unsigned int number){
+    if(number == 1){
+        return 0;
+    }
+
+    if(distances[number] == 0){
+        if(number % 2 == 0){
+            distances[number] = ComputeDistance_014(distances, number / 2) + 1;
+        } else {
+            distances[number] = ComputeDistance_014(distances, 3 * number + 1) + 1;
+        }
+    }
+
+    return distances[number];
+}
+
+void ProjectEuler014_Array(){
+    int T = 8;
+    unsigned int N[] = {
+        10,
+        15,
+        20,
+        100,
+        1000,
+        10000,
+        100000,
+        1000000,
+        10000000, // inacurrate
+        100000000, // bad_alloc
+        1000000000
+    };
+
+
+    array<unsigned int, arraySize> distances = {};
+    distances.fill(0);
+
+    // Precompute power of 2 numbers
+    for(int i = 2; i < arraySize; i *= 2){
+        ComputeDistance_014(distances, i);
+    }
+
+    for(int a = 0; a < T; a++){
+        int n = N[a];
+
+        unsigned int maxStep = distances[1];
+        unsigned int index = 1;
+        for(int i = 2; i <= n; i++){
+            cout << i << endl;
+            ComputeDistance_014(distances, i);
+
+            if(distances[i] >= maxStep){
+                maxStep = distances[i];
+                index = i;
+            }
+        }
+
+        cout << index << " with " << maxStep << " steps." << endl;
+    }
 }
