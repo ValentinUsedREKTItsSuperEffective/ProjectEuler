@@ -14,7 +14,8 @@ void ProjectEuler012_Naive();
 void ProjectEuler013();
 void ProjectEuler014();
 void ProjectEuler015();
+void ProjectEuler016();
 
 int main(){
-    ProjectEuler006();
+    ProjectEuler016();
 }
