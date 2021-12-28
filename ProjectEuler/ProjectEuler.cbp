@@ -46,6 +46,7 @@
 		<Unit filename="ProjectEuler015.cpp" />
 		<Unit filename="ProjectEuler016.cpp" />
 		<Unit filename="ProjectEuler017.cpp" />
+		<Unit filename="ProjectEuler018.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
