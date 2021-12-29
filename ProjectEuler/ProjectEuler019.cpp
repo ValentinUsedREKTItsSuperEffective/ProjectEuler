@@ -20,7 +20,7 @@ Answer: 171
 */
 
 void ProjectEuler019(){
-    unsigned int nbOfDays = 1;
+    unsigned int nbOfDays = 1; // Start on Monday the FIRST of January 1900
     unsigned int nbOfSundays = 0;
 
     for(int y = 1900; y < 2001; y++){
@@ -34,7 +34,7 @@ void ProjectEuler019(){
                     break;
                 case 2:
                     if(y % 4 == 0){
-                        if(y % 100 == 0 && y % 400 != 0){
+                        if(y % 100 == 0 && y % 400 != 0){ // leap year conditions
                             nbOfDays += 28;
                         } else {
                             nbOfDays += 29;
@@ -48,7 +48,7 @@ void ProjectEuler019(){
                     break;
             }
 
-            if(nbOfDays % 7 == 0 && y >= 1901){ // Sunday
+            if(nbOfDays % 7 == 0 && y >= 1901){ // Starting from 1, every 7 days are Sundays
                 nbOfSundays++;
             }
         }
