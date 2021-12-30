@@ -1,5 +1,5 @@
 #include <iostream>
-#include <bits/stdc++.h>
+#include "BigInteger.hpp"
 
 using namespace std;
 
@@ -11,48 +11,22 @@ What is the sum of the digits of the number 2^1000?
 Answer: 1366
 */
 
-void print(short number[10000]){
-    string s = "";
-    for(int i = 0; i < 10000 && number[i] != -1; i++){
-        s = to_string(number[i]) + s;
-    }
-    cout << s << endl;
-}
-
-void mul(short number[10000], int val){
-    short ret = 0;
-    for(int i = 0; i < 10000; i++){
-        if(number[i] == -1){
-            if(ret > 0){
-                number[i] = ret;
-            }
-            return;
-        }
-
-        number[i] *= 2;
-        number[i] += ret;
-        ret = number[i] / 10;
-        number[i] %= 10;
-    }
-}
-
 void ProjectEuler016(){
     int T = 5;
     int N[] = {3, 4, 7, 15, 1000};
 
-    short number[10000];
+    BigInteger number;
 
     for(int i = 0; i < T; i++){
-        memset(number, -1, sizeof(number));
-        number[0] = 1;
+        number = 1;
         unsigned int sum = 0;
 
         for(int j = 1; j <= N[i]; j++){
-            mul(number, 2);
+            number *= 2;
         }
 
-        for(int i = 0; i < 10000 && number[i] != -1; i++){
-            sum += number[i];
+        for(int i = 0; i < number.size; i++){
+            sum += number.value[i];
         }
 
         cout << sum << endl;
