@@ -21,16 +21,8 @@ void ProjectEuler016();
 void ProjectEuler017();
 void ProjectEuler018();
 void ProjectEuler019();
+void ProjectEuler020();
 
 int main(){
-    BigInteger n;
-
-    n = 25480;
-    n.Print();
-
-    n *= 100;
-    n.Print();
-
-    n *= 84526;
-    n.Print();
+    ProjectEuler020();
 }
