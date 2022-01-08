@@ -1,5 +1,5 @@
 #include <iostream>
-#include "BigInteger.hpp"
+#include "PEUtility.hpp"
 
 using namespace std;
 
@@ -25,5 +25,9 @@ void ProjectEuler020();
 void ProjectEuler021();
 
 int main(){
-    ProjectEuler021();
+    auto era = PEUtility::EratostheneSieve(100);
+    for(int i : era){
+        cout << i << endl;
+    }
+    //ProjectEuler021();
 }
