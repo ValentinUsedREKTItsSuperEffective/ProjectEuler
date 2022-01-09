@@ -1,5 +1,6 @@
 #include <iostream>
 #include <set>
+#include "PEUtility.hpp"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ Evaluate the sum of all the amicable numbers under 10000.
 Answer: 31626
 */
 
+// Naive
 int divisorSum(int n){
     int sum = 1; // 1 is always a proper divisor
     int tmp = n;
@@ -34,12 +36,14 @@ void ProjectEuler021(){
     int T = 1;
     int N[] = {10000, 100};
 
+    PEUtility::EratostheneSieve(10000);
+
     set<int> amicables;
 
     for(int i = 0; i < T; i++){
         for(int j = 6; j < N[i]; j++){
-            int a = divisorSum(j);
-            if(a != j && divisorSum(a) == j){
+            int a = PEUtility::SumOfDivisors(j, true);
+            if(a != j && PEUtility::SumOfDivisors(a, true) == j){
                 if(a < N[i])
                     amicables.emplace(a);
                 amicables.emplace(j);

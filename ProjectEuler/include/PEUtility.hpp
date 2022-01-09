@@ -5,13 +5,15 @@
 
 using namespace std;
 
-class PEUtility
-{
+class PEUtility {
     public:
+        static vector<unsigned int> Primes;
+
         PEUtility();
         ~PEUtility();
 
-        static vector<unsigned int> EratostheneSieve(unsigned int limit);
-};
+        static vector<unsigned int>& EratostheneSieve(unsigned int limit);
+        static unsigned int SumOfDivisors(unsigned int n, bool properDivisor = false);
+    };
 
 #endif // PEUTILITY_H

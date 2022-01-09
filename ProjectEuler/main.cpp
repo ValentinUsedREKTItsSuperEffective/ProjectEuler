@@ -25,9 +25,10 @@ void ProjectEuler020();
 void ProjectEuler021();
 
 int main(){
-    auto era = PEUtility::EratostheneSieve(100);
-    for(int i : era){
-        cout << i << endl;
+    int N[] = {1,2,3,4,5,6,7,8,9,10,15,21,28,220,284};
+
+    for(int i : N){
+        cout << PEUtility::SumOfDivisors(i, true) << endl;
     }
-    //ProjectEuler021();
+    ProjectEuler021();
 }
