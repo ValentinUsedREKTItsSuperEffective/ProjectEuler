@@ -55,11 +55,16 @@
 		<Unit filename="ProjectEuler021.cpp" />
 		<Unit filename="ProjectEuler022.cpp" />
 		<Unit filename="ProjectEuler023.cpp" />
+		<Unit filename="ProjectEuler024.cpp" />
 		<Unit filename="include/BigInteger.hpp" />
 		<Unit filename="include/PEUtility.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/BigInteger.cpp" />
 		<Unit filename="src/PEUtility.cpp" />
-		<Extensions />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
