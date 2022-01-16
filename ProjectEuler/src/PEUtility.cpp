@@ -2,33 +2,30 @@
 #include <map>
 #include <algorithm>
 
-vector<unsigned int> PEUtility::Primes = {2};
+vector<unsigned int> PEUtility::Primes;
 
 PEUtility::PEUtility(){}
 
 PEUtility::~PEUtility(){}
 
 vector<unsigned int>& PEUtility::EratostheneSieve(unsigned int limit){
-    if(limit > *(Primes.end() - 1)){
-        // Recompute all the primes if limit is superior than the biggest saved prime
-        Primes = {2};
+    vector<bool> isPrime = {false, false}; // 0 & 1 aren't primes
+    for(int i = 2; i <= limit; i++){
+        isPrime.push_back(true);
+    }
 
-        for(unsigned int i = 3; i <= limit; i += 2){
+    unsigned int prime = 2;
+    while(prime * prime <= limit){
+        for(unsigned int i = prime * prime; i <= limit; i += prime){ // i start a prime * prime is the same logic than why we stop the sieve at prime^2 <= limit
+            isPrime[i] = false;
+        }
+
+        while(!isPrime[++prime]){} // find the next prime number
+    }
+
+    for(int i = 0; i <= limit; i++){
+        if(isPrime[i])
             Primes.push_back(i);
-        }
-
-        unsigned int prime = 2;
-        for(unsigned int i = 1; prime * prime <= limit && i < Primes.size(); i++){
-            prime = Primes[i];
-
-            for(unsigned int j = i + 1; j < Primes.size();){
-                if(Primes[j] % prime == 0){
-                    Primes.erase(Primes.begin() + j);
-                } else {
-                    j++;
-                }
-            }
-        }
     }
 
     return Primes;
