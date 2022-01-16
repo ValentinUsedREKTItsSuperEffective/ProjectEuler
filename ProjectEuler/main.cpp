@@ -1,5 +1,5 @@
 #include <iostream>
-#include "PEUtility.hpp"
+#include "BigInteger.hpp"
 
 using namespace std;
 
@@ -30,5 +30,18 @@ void ProjectEuler023();
 void ProjectEuler024();
 
 int main(){
-    ProjectEuler010();
+    BigInteger a;
+    a = 99;
+    BigInteger b = a;
+
+    a.Print();
+    b.Print();
+
+    b.value[0] = 1;
+
+    a.Print();
+    b.Print();
+
+    BigInteger c = a + b;
+    c.Print();
 }

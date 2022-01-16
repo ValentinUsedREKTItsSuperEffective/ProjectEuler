@@ -11,6 +11,9 @@ class BigInteger{
         ~BigInteger();
 
         BigInteger& operator =(int n);
+        BigInteger& operator =(const BigInteger& bI);
+
+        BigInteger operator +(const BigInteger& bI);
         void operator *=(int n);
 
         void Print();

@@ -22,6 +22,39 @@ BigInteger& BigInteger::operator =(int n){
     return *this;
 }
 
+BigInteger& BigInteger::operator=(const BigInteger& bI){
+    this->size = bI.size;
+
+    for(unsigned int i = 0; i < size; i++){
+        this->value[i] = bI.value[i];
+    }
+
+    return *this;
+}
+
+BigInteger BigInteger::operator +(const BigInteger& bI){
+    BigInteger r;
+    r = *this;
+
+    int ret = 0;
+    for(unsigned int i = 0; i < bI.size; i++){
+        r.value[i] += bI.value[i] + ret;
+        ret = r.value[i] / 10;
+        r.value[i] %= 10;
+    }
+
+    if(bI.size > r.size){
+        r.size = bI.size;
+    }
+
+    while(ret > 0){
+        r.value[r.size++] = ret % 10;
+        ret /= 10;
+    }
+
+    return r;
+}
+
 void BigInteger::operator *=(int n){
     int ret = 0;
     int tmp = 0;
