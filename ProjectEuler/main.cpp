@@ -1,5 +1,4 @@
 #include <iostream>
-#include "BigInteger.hpp"
 
 using namespace std;
 
@@ -28,20 +27,8 @@ void ProjectEuler021();
 void ProjectEuler022();
 void ProjectEuler023();
 void ProjectEuler024();
+void ProjectEuler025();
 
 int main(){
-    BigInteger a;
-    a = 99;
-    BigInteger b = a;
-
-    a.Print();
-    b.Print();
-
-    b.value[0] = 1;
-
-    a.Print();
-    b.Print();
-
-    BigInteger c = a + b;
-    c.Print();
+    ProjectEuler025();
 }

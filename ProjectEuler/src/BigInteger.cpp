@@ -32,7 +32,7 @@ BigInteger& BigInteger::operator=(const BigInteger& bI){
     return *this;
 }
 
-BigInteger BigInteger::operator +(const BigInteger& bI){
+const BigInteger BigInteger::operator +(const BigInteger& bI){
     BigInteger r;
     r = *this;
 
