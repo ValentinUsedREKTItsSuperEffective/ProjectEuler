@@ -8,6 +8,12 @@ BigInteger::BigInteger(): size(1){
     memset(value, 0, sizeof(value));
 }
 
+BigInteger::BigInteger(int n): size(1){
+    memset(value, 0, sizeof(value));
+
+    *this = n;
+}
+
 BigInteger::~BigInteger(){}
 
 BigInteger& BigInteger::operator =(int n){
@@ -68,6 +74,28 @@ void BigInteger::operator *=(int n){
         value[size++] = ret % 10;
         ret /= 10;
     }
+}
+
+bool BigInteger::operator <(const BigInteger& bI){
+    if(size != bI.size){
+        return size < bI.size;
+    }
+
+    for(unsigned short i = size - 1; i >= 0; i--){
+        if(value[i] != bI.value[i]){
+            return value[i] < bI.value[i];
+        }
+    }
+
+    return false; // at this point compaired integer are the same, so it's false
+}
+
+bool operator <(BigInteger& l, const BigInteger& r){
+    return l.operator <(r);
+}
+
+bool operator <(const BigInteger& l, const BigInteger& r){
+    return const_cast<BigInteger&>(l).operator <(r);
 }
 
 void BigInteger::Print(){

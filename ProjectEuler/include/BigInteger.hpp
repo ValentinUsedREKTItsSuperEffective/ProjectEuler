@@ -8,6 +8,7 @@ class BigInteger{
         unsigned int size;
 
         BigInteger();
+        BigInteger(int n);
         ~BigInteger();
 
         BigInteger& operator =(int n);
@@ -15,6 +16,12 @@ class BigInteger{
 
         const BigInteger operator +(const BigInteger& bI);
         void operator *=(int n);
+
+        // Idea for comparison operators :
+        // https://en.cppreference.com/w/cpp/language/operators#Comparison%20operators
+        bool operator <(const BigInteger& bI);
+        friend bool operator <(BigInteger& l, const BigInteger& r);
+        friend bool operator <(const BigInteger& l, const BigInteger& r);
 
         void Print();
 

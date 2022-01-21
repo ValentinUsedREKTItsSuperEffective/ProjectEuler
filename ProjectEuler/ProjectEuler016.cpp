@@ -25,7 +25,7 @@ void ProjectEuler016(){
             number *= 2;
         }
 
-        for(int i = 0; i < number.size; i++){
+        for(unsigned int i = 0; i < number.size; i++){
             sum += number.value[i];
         }
 
