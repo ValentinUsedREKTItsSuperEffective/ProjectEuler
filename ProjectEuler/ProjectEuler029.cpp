@@ -130,10 +130,10 @@ void _ProjectEuler029(){
 
 void ProjectEuler029(){
     unsigned int minimumA = 2;
-    unsigned int maximumA = 16;
+    unsigned int maximumA = 100;
 
     unsigned int minimumB = 2;
-    unsigned int maximumB = 16;
+    unsigned int maximumB = 100;
 
     bool combinations[maximumA+1][maximumB+1];
 
@@ -157,7 +157,8 @@ void ProjectEuler029(){
                 ab *= a;
             }
         } else {
-            if(distincts[a] % 2 == 0){
+            cout << "For a : " << a << endl;
+            if(distincts[a] % 2 == 0){ // only work a = a'^2
                 for(unsigned int i = distincts[a] / 2; i < distincts[a]; i++){
                     for(unsigned int b = 2; distincts[a] * b / i <= maximumB; b++){
                         if(b % i != 0){
@@ -165,8 +166,8 @@ void ProjectEuler029(){
                         }
 
                         if(combinations[a][b]){
+                                cout << b << " ";
                             sum--;
-                            cout << "For " << a << "^" << i << "/" << distincts[a] << ", Cut " << distincts[a] << "*" << b << "/" << i << "(" << (distincts[a] * b / i) << "/" << maximumB << ")" << endl;
                         }
 
                         combinations[a][b] = false;
@@ -181,13 +182,14 @@ void ProjectEuler029(){
 
                         if(combinations[a][b]){
                             sum--;
-                            cout << "For " << a << "^" << i << "/" << distincts[a] << ", Cut " << distincts[a] << "*" << b << "/" << i << "(" << (distincts[a] * b / i) << "/" << maximumB << ")" << endl;
+                                cout << b << " ";
                         }
 
                         combinations[a][b] = false;
                     }
                 }
             }
+            cout << endl;
         }
     }
 
