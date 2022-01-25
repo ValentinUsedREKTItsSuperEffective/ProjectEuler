@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include "PEUtility.hpp"
 
 using namespace std;
 
@@ -128,6 +129,10 @@ void _ProjectEuler029(){
     cout << sum << endl;
 }
 
+float convertB(float m, float n, float b){
+    return b * n / m;
+}
+
 void ProjectEuler029(){
     unsigned int minimumA = 2;
     unsigned int maximumA = 100;
@@ -152,21 +157,22 @@ void ProjectEuler029(){
             unsigned int ab = a * a;
             unsigned int b = 2;
             while(ab <= maximumB){
-                cout << "distinct[" << ab << "] = " << b << endl;
                 distincts[ab] = b++;
                 ab *= a;
             }
         } else {
-            cout << "For a : " << a << endl;
-            if(distincts[a] % 2 == 0){ // only work a = a'^2
-                for(unsigned int i = distincts[a] / 2; i < distincts[a]; i++){
+            if(distincts[a] % 2 == 0){
+                for(unsigned int i = 1; i < distincts[a]; i++){
                     for(unsigned int b = 2; distincts[a] * b / i <= maximumB; b++){
-                        if(b % i != 0){
+                        if(distincts[a] / i > 2){
+                            continue;
+                        }
+
+                        if(distincts[a] / i < 2 && !(PEUtility::isNatural(convertB(i, distincts[a], b)))){
                             continue;
                         }
 
                         if(combinations[a][b]){
-                                cout << b << " ";
                             sum--;
                         }
 
@@ -176,20 +182,18 @@ void ProjectEuler029(){
             } else {
                 for(unsigned int i = 1; i < distincts[a]; i++){
                     for(unsigned int b = 2; distincts[a] * b / i <= maximumB; b++){
-                        if(b % i != 0){
+                        if(!(PEUtility::isNatural(convertB(i, distincts[a], b)))){
                             continue;
                         }
 
                         if(combinations[a][b]){
                             sum--;
-                                cout << b << " ";
                         }
 
                         combinations[a][b] = false;
                     }
                 }
             }
-            cout << endl;
         }
     }
 

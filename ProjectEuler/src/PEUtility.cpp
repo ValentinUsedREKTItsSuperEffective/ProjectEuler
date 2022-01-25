@@ -8,9 +8,16 @@ PEUtility::PEUtility(){}
 
 PEUtility::~PEUtility(){}
 
+const float PEUtility::epsilon = 0.0000001f;
+
+bool PEUtility::isNatural(float n){
+    float r = std::round(n);
+    return (n <= r + epsilon && n >= r - epsilon);
+}
+
 vector<unsigned int>& PEUtility::EratostheneSieve(unsigned int limit){
     vector<bool> isPrime = {false, false}; // 0 & 1 aren't primes
-    for(int i = 2; i <= limit; i++){
+    for(unsigned int i = 2; i <= limit; i++){
         isPrime.push_back(true);
     }
 
@@ -23,7 +30,7 @@ vector<unsigned int>& PEUtility::EratostheneSieve(unsigned int limit){
         while(!isPrime[++prime]){} // find the next prime number
     }
 
-    for(int i = 0; i <= limit; i++){
+    for(unsigned int i = 0; i <= limit; i++){
         if(isPrime[i])
             Primes.push_back(i);
     }
