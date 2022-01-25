@@ -71,63 +71,16 @@ And in general, for a being the cubic of a previous a, we have :
 
 Meaning that for b > (3), every b % 2 until 3b/2 <= 100 were duplicated for a^2/3.
 So when b = {34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66}, a^b is already duplicated
-making cubic value of previous a adding (1) - 32 - 17 = 50 new distinct values. (4)
+making cubic value of previous a adding (1) - 32 - 17 = 50 new distinct values.
 
 The same analysis can be made for each after a^b like if a = a'^b
     a^b = a^([m/n] * nb/m) = a'^nb/m
-with m = [1, n-1], then a^b is duplicated in a'^m/n when b % m = 0. (5)
-
-Using (3) and (5), we can then determined duplicated value for when :
-    a = 2^4 = 16    -> 49 from (3) and 16 from (5) for a total of 34 new distinct values
-    a = 2^5 = 32    -> 19 from (3) and 10 [5*b/2] + 11 [5*b/3] + 8 [5*b/4] from (5) for a total of 51 new distinct values
-    a = 2^6 = 64    -> 49 from (3) and 8 [6*b/4] + 5 [6*b/5] from (5) for a total of 37 new distinct values
-    a = 3^4 = 81    -> 49 from (3) and 16 from (5) for a total of 34 new distinct values
+with m = [1, n-1], then a^b is duplicated in a'^m/n when b % m = 0. (4)
 */
 
 /*
     cf. https://www.mathblog.dk/project-euler-29-distinct-terms-sequence-ab/
 */
-
-void _ProjectEuler029(){
-    map<unsigned int, unsigned int> distincts;
-
-    unsigned int sum = 0;
-    unsigned int combination = 0;
-
-    unsigned int minimumA = 2;
-    unsigned int maximumA = 100;
-
-    unsigned int minimumB = 2;
-    unsigned int maximumB = 100;
-
-    for(unsigned int a = minimumA; a <= maximumA; a++){
-        if(distincts[a] == 0){
-            sum += maximumB - minimumB + 1; // (1)
-
-            combination = a * a;
-            unsigned int b = 2;
-            while(combination <= maximumB){
-                cout << "distinct[" << combination << "] = " << b << endl;
-                distincts[combination] = b++;
-                combination *= a;
-            }
-        } else {
-            if(distincts[a] == 2){
-                sum += 50;
-            } else if(distincts[a] == 3){
-                sum += 50;
-            } else if(distincts[a] == 4){
-                sum += 34;
-            } else if(distincts[a] == 5){
-                sum += 51;
-            } else if(distincts[a] == 6){
-                sum += 37;
-            }
-        }
-    }
-
-    cout << sum << endl;
-}
 
 float convertB(float m, float n, float b){
     return b * n / m;
@@ -168,11 +121,11 @@ void ProjectEuler029(){
                             break; // get to the next i
                         }
 
-                        if(distincts[a] / i < 2 && !(PEUtility::isNatural(convertB(i, distincts[a], b)))){
+                        if(distincts[a] / i < 2 && !(PEUtility::isNatural(convertB(i, distincts[a], b)))){ // (4) equivalent
                             continue;
                         }
                     } else {
-                        if(!(PEUtility::isNatural(convertB(i, distincts[a], b)))){
+                        if(!(PEUtility::isNatural(convertB(i, distincts[a], b)))){ // (4) equivalent
                             continue;
                         }
                     }
