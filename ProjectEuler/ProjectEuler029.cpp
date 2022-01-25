@@ -161,37 +161,27 @@ void ProjectEuler029(){
                 ab *= a;
             }
         } else {
-            if(distincts[a] % 2 == 0){
-                for(unsigned int i = 1; i < distincts[a]; i++){
-                    for(unsigned int b = 2; distincts[a] * b / i <= maximumB; b++){
+            for(unsigned int i = 1; i < distincts[a]; i++){
+                for(unsigned int b = 2; distincts[a] * b / i <= maximumB; b++){
+                    if(distincts[a] % 2 == 0){
                         if(distincts[a] / i > 2){
-                            continue;
+                            break; // get to the next i
                         }
 
                         if(distincts[a] / i < 2 && !(PEUtility::isNatural(convertB(i, distincts[a], b)))){
                             continue;
                         }
-
-                        if(combinations[a][b]){
-                            sum--;
-                        }
-
-                        combinations[a][b] = false;
-                    }
-                }
-            } else {
-                for(unsigned int i = 1; i < distincts[a]; i++){
-                    for(unsigned int b = 2; distincts[a] * b / i <= maximumB; b++){
+                    } else {
                         if(!(PEUtility::isNatural(convertB(i, distincts[a], b)))){
                             continue;
                         }
-
-                        if(combinations[a][b]){
-                            sum--;
-                        }
-
-                        combinations[a][b] = false;
                     }
+
+                    if(combinations[a][b]){
+                        sum--;
+                    }
+
+                    combinations[a][b] = false;
                 }
             }
         }
