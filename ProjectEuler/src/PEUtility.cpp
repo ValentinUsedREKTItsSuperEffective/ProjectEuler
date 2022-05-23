@@ -15,6 +15,17 @@ bool PEUtility::isNatural(float n){
     return (n <= r + epsilon && n >= r - epsilon);
 }
 
+vector<unsigned short> PEUtility::breakNumber(unsigned int n){
+    vector<unsigned short> ret;
+
+    while(n % 10 > 0){
+        ret.push_back(n % 10);
+        n /= 10;
+    }
+
+    return ret;
+}
+
 vector<unsigned int>& PEUtility::EratostheneSieve(unsigned int limit){
     vector<bool> isPrime = {false, false}; // 0 & 1 aren't primes
     for(unsigned int i = 2; i <= limit; i++){
