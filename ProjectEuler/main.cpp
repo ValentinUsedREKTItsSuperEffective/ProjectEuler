@@ -33,7 +33,8 @@ void ProjectEuler027();
 void ProjectEuler028();
 void ProjectEuler029();
 void ProjectEuler030();
+void ProjectEuler031();
 
 int main(){
-    ProjectEuler030();
+    ProjectEuler031();
 }
