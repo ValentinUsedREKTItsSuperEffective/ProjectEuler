@@ -18,10 +18,19 @@ Answer: 73682
 */
 
 /*
-Can be written has the following equation:
+I tried at first the naive and tedious following way.
+By considering that each coin has a fixed decomposition:
+200 -> [100, 100]
+100 -> [50, 50] or [20, 20, 20, 20, 20]
+50 -> [20, 20, 10]
+20 -> [10, 10]
+10 -> [5, 5] or [2, 2, 2, 2, 2]
+5 -> [2, 2, 1]
+2 -> [1, 1]
 
-    200a + 100b + 50c + 20d + 10e + 5f + 2g + h = 200
-
+but running it doesn't find every combination of coin.
+For example, 20 cannot be lead to the combinaison [1*5p, 4*2p, 7*1p]
+So, I stoped going this way.
 
 void InsertCombinaison (map<unsigned short, unsigned short>& coinMap, map<unsigned long long, bool>& uniqueCombination) {
     unsigned long long key = coinMap[200] * 100000000000000ll +
@@ -166,9 +175,10 @@ void ProjectEuler031(){
     cout << uniqueCombination.size() << endl;
 }
 
+Instead, let's brute force.
 */
 
-void F(unsigned short remain, unsigned short* coins, unsigned int& combinations) {
+void NextCoin(unsigned short remain, unsigned short* coins, unsigned int& combinations) {
     unsigned short coin = *coins;
     if (coin == 1) {
         remain = 0;
@@ -179,7 +189,7 @@ void F(unsigned short remain, unsigned short* coins, unsigned int& combinations)
         return;
     } else {
         for (unsigned short i = 0; i <= remain; i += coin) {
-            F(remain - i, coins+1, combinations);
+            NextCoin(remain - i, coins+1, combinations);
         }
     }
 }
@@ -188,7 +198,7 @@ void ProjectEuler031(){
     unsigned short coins[8] = {200, 100, 50, 20, 10, 5, 2, 1};
     unsigned int combinaison = 0;
 
-    F(200, coins, combinaison);
+    NextCoin(200, coins, combinaison);
 
     cout << combinaison << endl;
 }
