@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cmath>
+#include "PEUtility.hpp"
 
 using namespace std;
 
@@ -22,6 +24,53 @@ So a number that include a 0 is not pandigital.
 log 10 + 1 to get the length of a natural integer.
 */
 
-void ProjectEuler032(){
+unsigned int IntSize(int value){
+    if (value == 0) {
+        return 1;
+    }
 
+    if (value < 0){
+        value = abs(value);
+    }
+
+    return 1 + log10(value);
+}
+
+bool IsNPandigital(unsigned short n, unsigned int value){
+    if (IntSize(value) != n) {
+        return false;
+    }
+
+    auto brokenValue = PEUtility::breakNumber(value);
+    bool bMap[n];
+    for (auto a : brokenValue) {
+        if (a < 1 || a > n) {
+            return false;
+        }
+
+        if (bMap[a]) {
+            return false;
+        }
+
+        bMap[a] = true;
+    }
+
+    return true;
+}
+
+void ProjectEuler032(){
+    unsigned long long total = 0ll;
+    for (unsigned int i = 1; i < 10000; i++) {
+        for (unsigned int j = i + 1; j < 10000; j++) {
+            unsigned int product = i * j;
+            unsigned int productSize = IntSize(product);
+            unsigned int jSize = IntSize(j);
+            if(IsNPandigital(9, i*pow(10, productSize+jSize) + j*pow(10, productSize) + product)) {
+                // cout << i*pow(10, productSize+jSize) + j*pow(10, productSize) + product << endl;
+                total += product;
+            }
+        }
+    }
+
+    cout << total << endl;
 }
