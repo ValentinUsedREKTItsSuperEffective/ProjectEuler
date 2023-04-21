@@ -89,7 +89,7 @@ unsigned long long FastPow(unsigned int n) {
 void ProjectEuler032(){
     map<unsigned long long, unsigned short> productMap;
     unsigned long long total = 0ll;
-    for (unsigned long long i = 1ll; i < 10000ll; i++) {
+    for (unsigned long long i = 1ll; i < 1000ll; i++) {
         for (unsigned long long j = i + 1ll; j < 10000ll; j++) {
             unsigned long long product = i * j;
             unsigned long long productSize = IntSize(product);
