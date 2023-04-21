@@ -90,6 +90,7 @@ void ProjectEuler032(){
     map<unsigned long long, unsigned short> productMap;
     unsigned long long total = 0ll;
     for (unsigned long long i = 1ll; i < 1000ll; i++) {
+        // J = I + 1 because previous value of I have been already computed and would false the result
         for (unsigned long long j = i + 1ll; j < 10000ll; j++) {
             unsigned long long product = i * j;
             unsigned long long productSize = IntSize(product);
