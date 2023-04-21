@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
+#include <map>
 #include "PEUtility.hpp"
 
 using namespace std;
@@ -13,7 +15,7 @@ Find the sum of all products whose multiplicand/multiplier/product identity can 
 HINT: Some products can be obtained in more than one way so be sure to only include it once in your sum.
 
 
-Answer:
+Answer: 45228
 */
 
 /*
@@ -24,25 +26,22 @@ So a number that include a 0 is not pandigital.
 log 10 + 1 to get the length of a natural integer.
 */
 
-unsigned int IntSize(int value){
-    if (value == 0) {
+unsigned int IntSize(unsigned long long value){
+    if (value == 0ll) {
         return 1;
-    }
-
-    if (value < 0){
-        value = abs(value);
     }
 
     return 1 + log10(value);
 }
 
-bool IsNPandigital(unsigned short n, unsigned int value){
+bool IsNPandigital(unsigned short n, unsigned long long value){
     if (IntSize(value) != n) {
         return false;
     }
 
-    auto brokenValue = PEUtility::breakNumber(value);
-    bool bMap[n];
+    vector<unsigned short> brokenValue = PEUtility::BreakNumber(value);
+    vector<bool> bMap;
+    bMap.assign(n+1, false);
     for (auto a : brokenValue) {
         if (a < 1 || a > n) {
             return false;
@@ -58,16 +57,49 @@ bool IsNPandigital(unsigned short n, unsigned int value){
     return true;
 }
 
+template<unsigned int E, unsigned int N>
+struct pow_struct {
+    enum {value = E * pow_struct<E, N - 1>::value };
+};
+
+template<unsigned int E>
+struct pow_struct<E, 0> {
+    enum {value = 1};
+};
+
+template<unsigned int E>
+unsigned long long FastPow(unsigned int n) {
+    static unsigned long long table[] = {
+        pow_struct<E, 0>::value,
+        pow_struct<E, 1>::value,
+        pow_struct<E, 2>::value,
+        pow_struct<E, 3>::value,
+        pow_struct<E, 4>::value,
+        pow_struct<E, 5>::value,
+        pow_struct<E, 6>::value,
+        pow_struct<E, 7>::value,
+        pow_struct<E, 8>::value,
+        pow_struct<E, 9>::value,
+        pow_struct<E, 10>::value
+    };
+
+    return table[n];
+}
+
 void ProjectEuler032(){
+    map<unsigned long long, unsigned short> productMap;
     unsigned long long total = 0ll;
-    for (unsigned int i = 1; i < 10000; i++) {
-        for (unsigned int j = i + 1; j < 10000; j++) {
-            unsigned int product = i * j;
-            unsigned int productSize = IntSize(product);
-            unsigned int jSize = IntSize(j);
-            if(IsNPandigital(9, i*pow(10, productSize+jSize) + j*pow(10, productSize) + product)) {
-                // cout << i*pow(10, productSize+jSize) + j*pow(10, productSize) + product << endl;
-                total += product;
+    for (unsigned long long i = 1ll; i < 10000ll; i++) {
+        for (unsigned long long j = i + 1ll; j < 10000ll; j++) {
+            unsigned long long product = i * j;
+            unsigned long long productSize = IntSize(product);
+            unsigned long long jSize = IntSize(j);
+            if(IsNPandigital(9, i*FastPow<10>(productSize+jSize) + j*FastPow<10>(productSize) + product)) {
+                //cout << i*FastPow<10>(productSize+jSize) + j*FastPow<10>(productSize) + product << endl;
+                if (productMap[product] == 0) {
+                    total += product;
+                    productMap[product] = 1;
+                }
             }
         }
     }

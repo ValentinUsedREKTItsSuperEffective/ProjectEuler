@@ -26,6 +26,18 @@ vector<unsigned short> PEUtility::breakNumber(unsigned int n){
     return ret;
 }
 
+vector<unsigned short> PEUtility::BreakNumber(unsigned long long n){
+    vector<unsigned short> ret = vector<unsigned short>();
+
+    while(n > 0ll){
+        unsigned short v = n % 10ll;
+        ret.push_back(v);
+        n /= 10ll;
+    }
+
+    return ret;
+}
+
 vector<unsigned int>& PEUtility::EratostheneSieve(unsigned int limit){
     vector<bool> isPrime = {false, false}; // 0 & 1 aren't primes
     for(unsigned int i = 2; i <= limit; i++){
