@@ -10,6 +10,24 @@ Find the sum of all the multiples of 3 or 5 below 1000.
 Answer: 233168
 */
 
+/*
+The sum of the multiple of a number R is the sum of the arithmetic progression of reason R:
+
+    U(n+1) = U(n) + R
+
+with U(0) = 0.
+
+The sum of an arithmetic progression, when the first term is U(0), is :
+
+    (n + 1) / 2 * (U(0) + U(n))
+
+Here U(0) = R and U(n) = U(0) + nR = nR
+
+    nR(n + 1)/2
+
+The solution is then the sum of the progression of reason 3 and 5 minus the sum of the progression of reason 15.
+*/
+
 void ProjectEuler001(){
     int T = 3;
     int N[] = {10, 100, 1000};
