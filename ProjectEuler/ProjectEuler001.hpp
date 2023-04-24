@@ -29,9 +29,11 @@ The solution is then the sum of the progression of reason 3 and 5 minus the sum 
 */
 
 struct ProjectEuler001 {
-    int samples[3];
+    constexpr static int sampleSize = 3;
+    int samples[sampleSize];
+    long answers[sampleSize];
 
-    ProjectEuler001(): samples({10, 100, 1000}) {}
+    ProjectEuler001(): samples({10, 100, 1000}), answers({23, 2318, 233168}) {}
 
     long Solution(int upperValue){
         long n = upperValue;
@@ -43,9 +45,23 @@ struct ProjectEuler001 {
         return 3 * three * (three + 1) / 2 + 5 * five * (five + 1) / 2 - 15 * fifteen * (fifteen + 1) / 2;
     }
 
-    void RunSample(){
+    void RunSample() {
         for(int sample : samples){
             cout << Solution(sample) << endl;
         }
+    }
+
+    bool TestSample() {
+        for(int i = 0; i < sampleSize; i++){
+            auto answer = Solution(samples[i]);
+            if (answer != answers[i]) {
+                cout << "Error in the solution for archive 001. Expected value for the sample " <<  samples[i] << " is " << answers[i];
+                cout << "But the computed value is " <<  Solution(samples[i]) << " is " << answer << endl;
+                return false;
+            }
+        }
+
+        cout << "Archive 001 tested successfully." << endl;
+        return true;
     }
 };
