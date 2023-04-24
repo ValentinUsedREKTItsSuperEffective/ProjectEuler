@@ -36,13 +36,14 @@ struct ProjectEuler001 {
     ProjectEuler001(): samples({10, 100, 1000}), answers({23, 2318, 233168}) {}
 
     long Solution(int upperValue){
-        long n = upperValue;
+        // - 1 because upperValue isn't included
+        long n = upperValue - 1;
 
-        long three = (n - 1)  / 3;
-        long five = (n - 1) / 5;
-        long fifteen = (n - 1) / 15;
+        long three = n  / 3;
+        long five = n / 5;
+        long fifteen = n / 15;
 
-        return 3 * three * (three + 1) / 2 + 5 * five * (five + 1) / 2 - 15 * fifteen * (fifteen + 1) / 2;
+        return (3 * three * (three + 1) + 5 * five * (five + 1) - 15 * fifteen * (fifteen + 1)) / 2;
     }
 
     void RunSample() {
