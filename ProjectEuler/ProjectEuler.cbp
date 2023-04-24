@@ -34,7 +34,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="ProjectEuler001.cpp" />
+		<Unit filename="ProjectEuler001.hpp" />
 		<Unit filename="ProjectEuler002.cpp" />
 		<Unit filename="ProjectEuler003.cpp" />
 		<Unit filename="ProjectEuler004.cpp" />

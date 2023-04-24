@@ -1,8 +1,10 @@
 #include <iostream>
 
+#include "ProjectEuler001.hpp"
+
 using namespace std;
 
-void ProjectEuler001();
+struct ProjectEuler001;
 void ProjectEuler002();
 void ProjectEuler003();
 void ProjectEuler004();
@@ -37,5 +39,6 @@ void ProjectEuler031();
 void ProjectEuler032();
 
 int main(){
-    ProjectEuler032();
+    ProjectEuler001 p;
+    p.RunSample();
 }
