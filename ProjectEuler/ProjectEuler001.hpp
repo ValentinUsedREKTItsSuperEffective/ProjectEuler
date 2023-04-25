@@ -35,7 +35,7 @@ struct ProjectEuler001 {
     int samples[sampleSize];
     long answers[sampleSize];
 
-    ProjectEuler001(): samples({10, 100, 1000}), answers({23, 2318, 233168}) {}
+    ProjectEuler001(): samples{10, 100, 1000}, answers{23, 2318, 233168} {}
 
     long Solution(int upperValue){
         // - 1 because upperValue isn't included
