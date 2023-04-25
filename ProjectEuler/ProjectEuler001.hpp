@@ -37,7 +37,7 @@ struct ProjectEuler001 {
 
     ProjectEuler001(): samples{10, 100, 1000}, answers{23, 2318, 233168} {}
 
-    long Solution(int upperValue){
+    static long Solution(int upperValue = 1000){
         // - 1 because upperValue isn't included
         long n = upperValue - 1;
 

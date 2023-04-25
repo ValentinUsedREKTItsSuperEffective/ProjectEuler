@@ -4,7 +4,6 @@
 
 using namespace std;
 
-struct ProjectEuler001;
 void ProjectEuler002();
 void ProjectEuler003();
 void ProjectEuler004();
@@ -39,6 +38,5 @@ void ProjectEuler031();
 void ProjectEuler032();
 
 int main(){
-    ProjectEuler001 p;
-    p.RunSample();
+    cout << ProjectEuler001::Solution() << endl;
 }
