@@ -36,7 +36,8 @@ void ProjectEuler029();
 void ProjectEuler030();
 void ProjectEuler031();
 void ProjectEuler032();
+void ProjectEuler033();
 
 int main(){
-    cout << ProjectEuler001::Solution() << endl;
+    ProjectEuler033();
 }
