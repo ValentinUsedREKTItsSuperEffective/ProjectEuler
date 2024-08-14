@@ -21,6 +21,8 @@ class PEUtility {
         static vector<unsigned int>& EratostheneSieve(unsigned int limit);
         static unsigned int SumOfDivisors(unsigned int n, bool properDivisor = false);
 
+        static int GCD(int a, int b);
+
     private:
         static const float epsilon;
     };

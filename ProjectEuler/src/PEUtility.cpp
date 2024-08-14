@@ -103,3 +103,16 @@ unsigned int PEUtility::SumOfDivisors(unsigned int n, bool properDivisor){
 
     return properDivisor ? sum - n : sum;
 }
+
+int PEUtility::GCD(int a, int b) {
+    if (b == 0) {
+        return a;
+    }
+
+    if (b > a) {
+        // Perform the modulo of the bigger integer by the lower integer
+        return GCD(b, a);
+    }
+
+    return GCD(b, a % b);
+}

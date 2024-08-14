@@ -1,4 +1,5 @@
 #include <iostream>
+#include "PEUtility.hpp"
 
 using namespace std;
 
@@ -55,6 +56,5 @@ void ProjectEuler033(){
             }
         }
     }
-    cout << nProduct << "/" << dProduct << endl;
-    // The result is the simplified denominator which is quite obvious so I'll not compute it.
+    cout << dProduct / PEUtility::GCD(nProduct, dProduct) << endl;
 }
