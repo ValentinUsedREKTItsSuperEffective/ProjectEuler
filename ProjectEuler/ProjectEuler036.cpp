@@ -11,7 +11,7 @@ Find the sum of all numbers, less than one million, which are palindromic in bas
 
 (Please note that the palindromic number, in either base, may not include leading zeros.)
 
-Answer: 872187 (0.905sec)
+Answer: 872187 (734.156ms)
 
 Tags: Palindrome
 */

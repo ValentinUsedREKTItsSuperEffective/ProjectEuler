@@ -15,7 +15,7 @@ Find the sum of the only eleven primes that are both truncatable from left to ri
 NOTE:
 2, 3, 5, and 7 are not considered to be truncatable primes.
 
-Answer: 748317
+Answer: 748317 (82.633ms)
 
 Tags: Prime, EratostheneSieve, iterator
 */
