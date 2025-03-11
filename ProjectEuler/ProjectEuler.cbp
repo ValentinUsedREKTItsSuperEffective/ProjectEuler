@@ -12,6 +12,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-Weffc++" />
 					<Add option="-g" />
 					<Add directory="include" />
 				</Compiler>
@@ -23,6 +24,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-Weffc++" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
@@ -70,6 +72,7 @@
 		<Unit filename="ProjectEuler034.cpp" />
 		<Unit filename="ProjectEuler035.cpp" />
 		<Unit filename="ProjectEuler036.cpp" />
+		<Unit filename="ProjectEuler037.cpp" />
 		<Unit filename="include/BigInteger.hpp" />
 		<Unit filename="include/PEUtility.hpp" />
 		<Unit filename="main.cpp" />
