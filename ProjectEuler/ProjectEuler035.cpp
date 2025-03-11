@@ -15,7 +15,7 @@ There are thirteen such primes below 100: 2, 3, 5, 7, 11, 13, 31. 37. 71. 73, 79
 
 How many circular primes are there below one million?
 
-Answer: 55
+Answer: 55 (146.577ms)
 
 Tags: Prime
 */
