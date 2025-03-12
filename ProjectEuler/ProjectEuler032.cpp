@@ -16,6 +16,8 @@ HINT: Some products can be obtained in more than one way so be sure to only incl
 
 
 Answer: 45228 (837.116ms)
+
+Tags: Pandigital
 */
 
 /*
