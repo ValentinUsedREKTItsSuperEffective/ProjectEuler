@@ -23,6 +23,9 @@ class PEUtility {
 
         static int GCD(int a, int b);
 
+        static unsigned int UIntLength(unsigned int value);
+        static bool IsPandigital(unsigned int value);
+
     private:
         static const float epsilon;
     };

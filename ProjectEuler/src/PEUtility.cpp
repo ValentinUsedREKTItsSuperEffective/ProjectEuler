@@ -1,6 +1,8 @@
 #include "PEUtility.hpp"
 #include <map>
 #include <algorithm>
+#include <cmath>
+#include <set>
 
 vector<unsigned int> PEUtility::Primes;
 
@@ -115,4 +117,28 @@ int PEUtility::GCD(int a, int b) {
     }
 
     return GCD(b, a % b);
+}
+
+unsigned int PEUtility::UIntLength(unsigned int n) {
+    if (n == 0) {
+        return 1;
+    }
+
+    return 1 + log10(n);
+}
+
+bool PEUtility::IsPandigital(unsigned int n){
+    if(n == 0) {
+        return false;
+    }
+
+    vector<unsigned char> brokenN = BreakNumber(n);
+
+    // For a pandigital number, there should be no loss of cypher due to set uniqueness property
+    set<unsigned char> setN = set<unsigned char>();
+    for(auto c: brokenN){
+        setN.insert(c);
+    }
+
+    return UIntLength(n) == setN.size();
 }
