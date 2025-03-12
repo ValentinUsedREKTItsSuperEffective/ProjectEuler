@@ -15,8 +15,8 @@ bool PEUtility::isNatural(float n){
     return (n <= r + epsilon && n >= r - epsilon);
 }
 
-vector<unsigned short> PEUtility::breakNumber(unsigned int n){
-    vector<unsigned short> ret;
+vector<unsigned char> PEUtility::BreakNumber(unsigned int n){
+    vector<unsigned char> ret = vector<unsigned char>();
 
     while(n % 10 > 0){
         ret.push_back(n % 10);
@@ -26,8 +26,8 @@ vector<unsigned short> PEUtility::breakNumber(unsigned int n){
     return ret;
 }
 
-vector<unsigned short> PEUtility::BreakNumber(unsigned long long n){
-    vector<unsigned short> ret = vector<unsigned short>();
+vector<unsigned char> PEUtility::BreakNumber(unsigned long long n){
+    vector<unsigned char> ret = vector<unsigned char>();
 
     while(n > 0ll){
         unsigned short v = n % 10ll;
