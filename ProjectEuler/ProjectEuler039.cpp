@@ -13,7 +13,7 @@ For which value of p <= 1000, is the number of solutions maximised?
 
 Answer: 840 (6.503ms)
 
-Tags:
+Tags: Pythagorean triple, Pythagore
 */
 
 /* Thoughts:
