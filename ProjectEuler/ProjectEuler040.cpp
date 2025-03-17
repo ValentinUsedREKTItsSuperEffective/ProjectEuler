@@ -17,7 +17,7 @@ If d_n represents the nth digit of the fractional part, find the value of the fo
 
 Answer: 210 (0.653ms)
 
-Tags:
+Tags: Champernowne's Constant
 */
 
 void ProjectEuler040(){
