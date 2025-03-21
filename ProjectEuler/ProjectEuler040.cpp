@@ -20,6 +20,14 @@ Answer: 210 (0.653ms)
 Tags: Champernowne's Constant
 */
 
+/*
+[1..9]                  1 digit     length of 9
+[10..99]                2 digits    length of 90 * 2 characters
+[100..999]              3 digits    length of 900 * 3 characters
+...
+[10^x...10^(x+1)-1]     x+1 digits  length of 9*10^x * (x+1) characters
+*/
+
 void ProjectEuler040(){
     std::vector<unsigned long long> indexes = {1,10,100,1000,10000,100000,1000000};
     unsigned product = 1;
