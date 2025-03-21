@@ -1,6 +1,5 @@
 #include <iostream>
 #include "PEUtility.hpp"
-#include <climits>
 
 using namespace std;
 
@@ -10,15 +9,20 @@ For example, 2143 is a 4-digit pandigital and is also prime.
 
 What is the largest n-digit pandigital prime that exists?
 
-Answer:
+Answer: 7652413 (347.747ms)
 
 Tags: Pandigital
 */
 
-void ProjectEuler041(){
-    static_assert(UINT_MAX >= 987654321);
+/*
+I tried first to pre-compute primes up to 987654321.
+But 1+2+3+4+5+6+7+8+9 = 45 and 1+2+3+4+5+6+7+8 = 36
+which are both divisible by 3.
+Thus, I just have to compute prime up 7654321 instead.
+*/
 
-    vector<unsigned>& primes = PEUtility::EratostheneSieve(987654321);
+void ProjectEuler041(){
+    vector<unsigned>& primes = PEUtility::EratostheneSieve(7654321);
 
     for(auto it = primes.rbegin(); it != primes.rend(); ++it){
         if (PEUtility::IsPandigital(*it)) {
@@ -26,6 +30,4 @@ void ProjectEuler041(){
             return;
         }
     }
-
-    cout << "0\n";
 }

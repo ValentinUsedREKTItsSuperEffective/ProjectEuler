@@ -144,5 +144,6 @@ bool PEUtility::IsPandigital(unsigned int n){
         setN.insert(c);
     }
 
-    return UIntLength(n) == setN.size();
+    // set is sorted. So the last digit in setN should be the size of setN for a pandigital number
+    return *setN.rbegin() == setN.size() && UIntLength(n) == setN.size();
 }

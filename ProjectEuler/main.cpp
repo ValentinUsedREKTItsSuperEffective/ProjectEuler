@@ -58,6 +58,7 @@ int main(){
     assert(PEUtility::BreakNumber((unsigned long long)3201).size() == 4);
     assert(PEUtility::IsPandigital(3201) == false);
     assert(PEUtility::IsPandigital(98765431) == false);
+    assert(PEUtility::IsPandigital(887645321) == false);
 
     assert(ProjectEuler032() == 45228LL);
     assert(ProjectEuler038() == 932718654);
@@ -65,7 +66,7 @@ int main(){
 
     std::chrono::steady_clock::time_point startTimePoint = std::chrono::steady_clock::now();
 
-    // ProjectEuler038();
+    ProjectEuler041();
 
     std::chrono::steady_clock::time_point endTimePoint = std::chrono::steady_clock::now();
     cout << "Elapsed time: " << std::chrono::duration_cast<std::chrono::microseconds>(endTimePoint - startTimePoint).count() / 1000.0 << "ms\n";
