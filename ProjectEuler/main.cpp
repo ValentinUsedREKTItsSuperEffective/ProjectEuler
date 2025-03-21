@@ -1,7 +1,12 @@
 #include <iostream>
 #include <chrono>
+#include <cassert>
+
+#include "PEUtility.hpp"
 
 #include "ProjectEuler001.hpp"
+
+// #define TEST
 
 using namespace std;
 
@@ -45,11 +50,17 @@ void ProjectEuler037();
 void ProjectEuler038();
 void ProjectEuler039();
 void ProjectEuler040();
+void ProjectEuler041();
 
 int main(){
+#ifdef TEST
+    assert(PEUtility::IsPandigital(3201) == false);
+    assert(PEUtility::IsPandigital(98765431) == false);
+#endif // TEST
+
     std::chrono::steady_clock::time_point startTimePoint = std::chrono::steady_clock::now();
 
-    ProjectEuler040();
+    // ProjectEuler038();
 
     std::chrono::steady_clock::time_point endTimePoint = std::chrono::steady_clock::now();
     cout << "Elapsed time: " << std::chrono::duration_cast<std::chrono::microseconds>(endTimePoint - startTimePoint).count() / 1000.0 << "ms\n";
