@@ -137,6 +137,10 @@ bool PEUtility::IsPandigital(unsigned int n){
     // For a pandigital number, there should be no loss of cypher due to set uniqueness property
     set<unsigned char> setN = set<unsigned char>();
     for(auto c: brokenN){
+        if(c == 0) { // Pandigital number are composed of digit between 1 and n
+            return false;
+        }
+
         setN.insert(c);
     }
 

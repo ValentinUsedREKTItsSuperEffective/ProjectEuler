@@ -41,7 +41,7 @@ void ProjectEuler028();
 void ProjectEuler029();
 void ProjectEuler030();
 void ProjectEuler031();
-void ProjectEuler032();
+unsigned long long ProjectEuler032();
 void ProjectEuler033();
 void ProjectEuler034();
 void ProjectEuler035();
@@ -59,6 +59,7 @@ int main(){
     assert(PEUtility::IsPandigital(3201) == false);
     assert(PEUtility::IsPandigital(98765431) == false);
 
+    assert(ProjectEuler032() == 45228LL);
     assert(ProjectEuler038() == 932718654);
 #endif // TEST
 

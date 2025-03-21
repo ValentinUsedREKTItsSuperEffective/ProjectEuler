@@ -88,7 +88,7 @@ unsigned long long FastPow(unsigned int n) {
     return table[n];
 }
 
-void ProjectEuler032(){
+unsigned long long ProjectEuler032(){
     map<unsigned long long, unsigned short> productMap;
     unsigned long long total = 0ll;
     for (unsigned long long i = 1ll; i < 1000ll; i++) {
@@ -108,4 +108,5 @@ void ProjectEuler032(){
     }
 
     cout << total << endl;
+    return total;
 }
