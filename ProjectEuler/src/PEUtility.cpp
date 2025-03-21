@@ -20,7 +20,7 @@ bool PEUtility::isNatural(float n){
 vector<unsigned char> PEUtility::BreakNumber(unsigned int n){
     vector<unsigned char> ret = vector<unsigned char>();
 
-    while(n % 10 > 0){
+    while(n > 0){
         ret.push_back(n % 10);
         n /= 10;
     }

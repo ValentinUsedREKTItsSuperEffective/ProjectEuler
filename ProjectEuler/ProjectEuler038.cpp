@@ -33,11 +33,10 @@ Since it has to be the concatenation of at least two numbers,
 I suppose that N have a maximum of 9876.
 */
 
-void ProjectEuler038(){
+unsigned ProjectEuler038(){
     unsigned int largestPandigital = 0;
     for(unsigned i = 1; i <= 9876; i++){
         unsigned concatenatedProduct = i;
-        unsigned lenghtI = PEUtility::UIntLength(i);
         for(unsigned n = 2; PEUtility::UIntLength(concatenatedProduct) < 9; n++){
             unsigned product = i*n;
             unsigned lenghtP = PEUtility::UIntLength(product);
@@ -58,6 +57,7 @@ void ProjectEuler038(){
     }
 
     cout << largestPandigital << "\n";
+    return largestPandigital;
 }
 
 

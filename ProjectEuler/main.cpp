@@ -47,15 +47,19 @@ void ProjectEuler034();
 void ProjectEuler035();
 void ProjectEuler036();
 void ProjectEuler037();
-void ProjectEuler038();
+unsigned ProjectEuler038();
 void ProjectEuler039();
 void ProjectEuler040();
 void ProjectEuler041();
 
 int main(){
 #ifdef TEST
+    assert(PEUtility::BreakNumber((unsigned)3201).size() == 4);
+    assert(PEUtility::BreakNumber((unsigned long long)3201).size() == 4);
     assert(PEUtility::IsPandigital(3201) == false);
     assert(PEUtility::IsPandigital(98765431) == false);
+
+    assert(ProjectEuler038() == 932718654);
 #endif // TEST
 
     std::chrono::steady_clock::time_point startTimePoint = std::chrono::steady_clock::now();
