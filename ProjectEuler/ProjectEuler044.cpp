@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
@@ -13,11 +14,92 @@ However, their difference, 70 - 22 = 48, is not pentagonal.
 Find the pair of pentagonal numbers, P_j and P_k, for which their sum and difference are pentagonal
 and D = |P_k - P_j| is minimised; what is the value of D?
 
-Answer:
+Answer: 5482660 (200.452ms)
 
-Tags:
+Tags: Quadratic
 */
 
-void ProjectEuler044(){
+/* Thoughts:
+P_n numbers can be determined using the following:
 
+     P_n+1  = (n+1)(3(n+1) - 1)/2
+            = (3(n+1)^2 - n -1)/2
+            = (3(n^2 + 2n + 1) - n - 1)/2
+            = (3n^2 + 6n + 3 - n - 1)/2
+            = (n(3n - 1) + 6n + 3 - 1)/2
+            = n(3n - 1)/2 + (6n + 2)/2
+            = P_n + 3n + 1
+
+n can be computed by solving the following quadratic equation:
+
+     P_n    = n(3n - 1)/2
+            = (3n^2 - n)/2
+            = 1.5n^2 - 0.5n
+     0      = 1.5n^2 - 0.5n - P_n
+
+     det    = (-0.5)^2 - (4 * 1.5 * -P_n)
+            = 0.25 + 6P_n
+
+The determinant will always be positive so, n has two possible values.
+The n we are looking for is the positive one:
+
+     n      = (-b + sqrt(det))/2a
+            = (0.5 + sqrt(0.25 + 6P_n))/2*1.5
+            = (0.5 + sqrt(0.25 + 6P_n))/3
+
+If n is a natural number, it means that P_n is pentagonal.
+
+        P_n+1 - P_n = P_n - P_n + 3n + 1
+                    = 3n + 1
+
+        P_n+2 - P_n = P_n+1 + 3n + 1  - P_n
+                    = P_n - P_n + 3n + 1 + 3n + 1
+                    = 2(3n + 1)
+
+For k in [1, 2, 3, ..., x]
+
+        P_n+k - P_n = P_n+k - P_n
+                    = (n+k)(3(n+k) - 1)/2 - P_n
+                    = (3(n+k)^2 - (n+k))/2 - P_n
+                    = (3(n^2 + 2nk + k^2) - (n+k))/2 - P_n
+                    = (3n^2 + 6nk + 3k^2) - (n+k))/2 - P_n
+                    = (3n^2 + 6nk + 3k^2 - n - k))/2 - P_n
+                    = (n(3n - 1) + 6nk + 3k^2 - k))/2 - P_n
+                    = n(3n - 1)/2 + (6nk + 3k^2 - k)/2 - P_n
+                    = P_n + (6nk + k(3k - 1))/2 - P_n
+                    = P_k + 3nk
+
+        P_n+k + P_n = P_n + P_k + 3nk + P_n
+                    = 2P_n + P_k + 3nk
+
+P_7 - P_2 = P_5 + 3*2*5 = 35 + 30 = 65 = 70 - 5
+P_7 - P_4 = P_3 + 3*3*4 = 12 + 36 = 48 = 70 - 22
+
+Hypothese:
+Si P_n + P_n+1 < P_n+2
+alors pour tout n+k, k un entier naturel, P_n + P_n+k sera toujours sous P_x, x etant un entier naturel et x > n+k+1.
+*/
+
+bool isPentagonal(double Pn){
+    double n = (0.5 + sqrt(0.25 + 6.00*Pn))/3.0;
+    return n == trunc(n);
+}
+
+#define MAX 10000
+
+void ProjectEuler044(){
+    unsigned P_n[MAX];
+    P_n[0] = 1;
+    for(unsigned i = 1; i < MAX; i++){
+        P_n[i] = P_n[i-1] + 3*i + 1;
+    }
+
+    for(unsigned i = 0; i < MAX - 2; i++){
+        for(unsigned j = i+1; j < MAX - 1; j++){
+            if(isPentagonal(P_n[i] + P_n[j]) && isPentagonal(P_n[j] - P_n[i])){
+                cout << P_n[j] - P_n[i] << "\n";
+                return;
+            }
+        }
+    }
 }
