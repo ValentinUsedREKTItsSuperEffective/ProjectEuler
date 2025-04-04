@@ -6,6 +6,8 @@
 
 #include "ProjectEuler001.hpp"
 
+#include "AVLTree.hpp"
+
 // #define TEST
 
 using namespace std;
@@ -71,7 +73,16 @@ int main(){
 
     std::chrono::steady_clock::time_point startTimePoint = std::chrono::steady_clock::now();
 
-    ProjectEuler046();
+    AVLTree tree;
+    tree.Insert(50);
+    tree.Insert(17);
+    tree.Insert(76);
+    tree.Insert(14);
+    tree.Insert(9);
+    tree.Insert(15);
+    tree.Print();
+
+    //ProjectEuler046();
 
     std::chrono::steady_clock::time_point endTimePoint = std::chrono::steady_clock::now();
     cout << "Elapsed time: " << std::chrono::duration_cast<std::chrono::microseconds>(endTimePoint - startTimePoint).count() / 1000.0 << "ms\n";
