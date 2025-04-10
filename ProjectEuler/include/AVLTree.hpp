@@ -6,6 +6,8 @@
 
 #define TREE_SIZE 1+2+4+8+16+32+64+128+256
 
+// Reference: https://www.guru99.com/fr/avl-tree.html
+
 // Todo: T instead of unsigned everywhere
 class AVLTree {
 
