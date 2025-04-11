@@ -26,19 +26,19 @@ class AVLTree {
     };
 
     // Todo: allocate size_of(Node) * (2^0, 2^1, 2^2, 2^3, ..., 2^depth
-    Node root[TREE_SIZE];
+    Node nodes[TREE_SIZE];
 
     public:
-        AVLTree(): root{}{}
+        AVLTree(): nodes{}{}
         ~AVLTree(){}
 
         void Insert(unsigned key) {
-            if(!root[0].initialized){
-                root[0] = Node(key, 0, 0);
+            if(!nodes[0].initialized){
+                nodes[0] = Node(key, 0, 0);
                 return;
             }
 
-            Node* node = root;
+            Node* node = nodes;
 
             while(true){
                 if(key == node->key){
@@ -55,8 +55,8 @@ class AVLTree {
                         }
                         unsigned width = 2*node->width;
                         unsigned index = minIndex + width;
-                        root[index] = Node(key, node->depth+1, width);
-                        node->left = root + index;
+                        nodes[index] = Node(key, node->depth+1, width);
+                        node->left = nodes + index;
                         return;
                     }
                 } else {
@@ -69,8 +69,8 @@ class AVLTree {
                         }
                         unsigned width = 2*node->width + 1;
                         unsigned index = minIndex + width;
-                        root[index] = Node(key, node->depth+1, width);
-                        node->right = root + index;
+                        nodes[index] = Node(key, node->depth+1, width);
+                        node->right = nodes + index;
                         return;
                     }
                 }
@@ -83,8 +83,8 @@ class AVLTree {
                 unsigned width = pow(2, d);
                 for(unsigned w = 0; w < width; w++){
                     unsigned index = width-1 + w;
-                    if(root[index].initialized){
-                        std::cout << root[index].key << " ";
+                    if(nodes[index].initialized){
+                        std::cout << nodes[index].key << " ";
                     } else {
                         std::cout << "_ ";
                     }
