@@ -27,18 +27,20 @@ class AVLTree {
 
     // Todo: allocate size_of(Node) * (2^0, 2^1, 2^2, 2^3, ..., 2^depth
     Node nodes[TREE_SIZE];
+    Node* root;
 
     public:
-        AVLTree(): nodes{}{}
+        AVLTree(): nodes{}, root(nullptr) {}
         ~AVLTree(){}
 
         void Insert(unsigned key) {
-            if(!nodes[0].initialized){
+            if(!root){
                 nodes[0] = Node(key, 0, 0);
+                root = nodes;
                 return;
             }
 
-            Node* node = nodes;
+            Node* node = root;
 
             while(true){
                 if(key == node->key){
