@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <set>
+#include <stdexcept>
 
 vector<unsigned int> PEUtility::Primes;
 
@@ -61,6 +62,24 @@ vector<unsigned int>& PEUtility::EratostheneSieve(unsigned int limit){
     }
 
     return Primes;
+}
+
+bool PEUtility::IsPrime(unsigned N){
+    if(Primes.empty()) { // empty() = isEmpty()
+        throw std::length_error("Primes has not been initialized");
+    }
+
+    for(unsigned prime: Primes){
+        if (prime > N){
+            return false;
+        }
+
+        if (prime == N){
+            return true;
+        }
+    }
+
+    return false;
 }
 
 unsigned int PEUtility::SumOfDivisors(unsigned int n, bool properDivisor){

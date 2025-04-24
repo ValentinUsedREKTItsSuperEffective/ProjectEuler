@@ -67,6 +67,31 @@ int main(){
 
     assert(ProjectEuler032() == 45228LL);
     assert(ProjectEuler038() == 932718654);
+
+    /*
+    PEUtility::EratostheneSieve(1000000);
+    assert(PEUtility::IsPrime(1) == false);
+    assert(PEUtility::IsPrime(11) == true);
+    assert(PEUtility::IsPrime(17) == true);
+    assert(PEUtility::IsPrime(53) == true);
+    assert(PEUtility::IsPrime(67) == true);
+    assert(PEUtility::IsPrime(73) == true);
+    assert(PEUtility::IsPrime(89) == true);
+    assert(PEUtility::IsPrime(97) == true);
+    assert(PEUtility::IsPrime(149) == true);
+    assert(PEUtility::IsPrime(193) == true);
+    assert(PEUtility::IsPrime(229) == true);
+    assert(PEUtility::IsPrime(10005) == false);
+    assert(PEUtility::IsPrime(10035) == false);
+    assert(PEUtility::IsPrime(10125) == false);
+    assert(PEUtility::IsPrime(10215) == false);
+    assert(PEUtility::IsPrime(10395) == false);
+    assert(PEUtility::IsPrime(10575) == false);
+    assert(PEUtility::IsPrime(10725) == false);
+    assert(PEUtility::IsPrime(10845) == false);
+    assert(PEUtility::IsPrime(11025) == false);
+    assert(PEUtility::IsPrime(11265) == false);
+    */
 #endif // TEST
 
     std::chrono::steady_clock::time_point startTimePoint = std::chrono::steady_clock::now();

@@ -19,6 +19,8 @@ class PEUtility {
         static vector<unsigned char> BreakNumber(unsigned long long);
 
         static vector<unsigned int>& EratostheneSieve(unsigned int limit);
+        static bool IsPrime(unsigned N);
+
         static unsigned int SumOfDivisors(unsigned int n, bool properDivisor = false);
 
         static int GCD(int a, int b);
