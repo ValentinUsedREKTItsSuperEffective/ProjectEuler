@@ -17,7 +17,7 @@ What 12-digit number do you form by concatenating the three terms in this sequen
 
 Answer: 296962999629 (20.808ms)
 
-Tags: Permutation
+Tags: Permutation, Algorithm
 */
 
 void ProjectEuler049(){

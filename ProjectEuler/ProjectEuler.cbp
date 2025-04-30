@@ -85,6 +85,7 @@
 		<Unit filename="ProjectEuler047.cpp" />
 		<Unit filename="ProjectEuler048.cpp" />
 		<Unit filename="ProjectEuler049.cpp" />
+		<Unit filename="ProjectEuler050.cpp" />
 		<Unit filename="include/BigInteger.hpp" />
 		<Unit filename="include/PEUtility.hpp" />
 		<Unit filename="main.cpp" />
