@@ -1,6 +1,8 @@
 #include <iostream>
 #include "PEUtility.hpp"
 
+#include <set>
+
 using namespace std;
 
 /*
@@ -20,7 +22,7 @@ Consequently 56003, being the first member of this family, is the smallest prime
 Find the smallest prime which, by replacing part of the number (not necessarily adjacent digits) with the same digit,
 is part of an eight prime value family.
 
-Answer:
+Answer: 121313 (4515.46ms)
 
 Tags:
 */
@@ -33,11 +35,138 @@ The number of replaced digits is unknown.
 
 The most right digit cannot be replaced to match an eight prime value family because prime number cannot end with 2, 4, 5, 6, 8, 0.
 
-A family member is composed of a constant C, plus a [0, 1, ..., 9] * FalseBinary, that is to say a number composed of 0 and 1 only.
+A family member is composed of a constant C, plus a multiplicator of [0, 1, ..., 9] * FalseBinary, that is to say a number composed of 0 and 1 only.
 */
 
+bool CanBePartOfEightMemberFamily(unsigned A, unsigned B, unsigned& constant, unsigned& expectedMultiplicatorB, unsigned& falseBinary){
+    // See Thoughts: The most right digit cannot be replaced.
+    if (A % 10 != B % 10){
+        return false;
+    }
+
+    if (A == B){
+        return false;
+    }
+
+    if (B > A){
+        // XOR swap
+        B ^= A;
+        A ^= B;
+        B ^= A;
+    }
+
+    constant = B;
+    falseBinary = 0;
+    unsigned expectedMultiplicatorA = 0;
+    expectedMultiplicatorB = 666;
+    unsigned tenMul = 10;
+
+    do{
+        A /= 10;
+        B /= 10;
+
+        unsigned modA = A % 10;
+        unsigned modB = B % 10;
+        if (modA != modB){
+            if(expectedMultiplicatorB == 666){
+                expectedMultiplicatorB = modB;
+                expectedMultiplicatorA = modA;
+
+                // expectedMultiplicatorB > 2 would mean that the family member have at most multiplicators of [3, 4, 5, 6, 7, 8, 9] which is 7 members
+                if(expectedMultiplicatorB > 2){
+                    return false;
+                }
+            } else {
+                // check here that the replaced digits stay the same amoung there respective numbers A and B
+                if (expectedMultiplicatorA != modA || expectedMultiplicatorB != modB){
+                    return false;
+                }
+            }
+
+            falseBinary += tenMul;
+        }
+
+        tenMul *= 10;
+    } while (A > 0);
+
+    constant -= (expectedMultiplicatorB * falseBinary);
+
+    return true;
+}
 
 void ProjectEuler051(){
+    /*
+    From A = 205837 and B = 104827
+    4294870103 + 0*101010 = 4294870103 is prime ? 0
+    4294870103 + 1*101010 = 3817 is prime ? 0
+    4294870103 + 2*101010 = 104827 is prime ? 1
+    4294870103 + 3*101010 = 205837 is prime ? 1
+    4294870103 + 4*101010 = 306847 is prime ? 1
+    4294870103 + 5*101010 = 407857 is prime ? 1
+    4294870103 + 6*101010 = 508867 is prime ? 1
+    4294870103 + 7*101010 = 609877 is prime ? 1
+    4294870103 + 8*101010 = 710887 is prime ? 1
+    4294870103 + 9*101010 = 811897 is prime ? 1
+    */
+    unsigned a,b,c;
+    CanBePartOfEightMemberFamily(205837, 104827, a, b, c);
+
     auto primes = PEUtility::EratostheneSieve(1000000);
 
+    // Sort primes depending on their rightmost digit
+    set<unsigned> primeSet = set<unsigned>();
+    unsigned roof = 100;
+
+    for(auto it = primes.begin(); it != primes.end();){
+        unsigned prime = *it;
+        if (prime < 10){
+            it++;
+            continue;
+        }
+
+        if (prime < roof){
+            primeSet.insert(prime);
+
+            it++;
+
+            if(it != primes.end()){
+                continue;
+            }
+        }
+
+
+        for(auto itB = primeSet.begin(); itB != primeSet.end(); itB++){
+            for(auto itA = std::next(itB,1); itA != primeSet.end(); itA++){
+                unsigned constant = 0;
+                unsigned mul = 0;
+                unsigned falseBinary = 0;
+                char counter = 10;
+                if(CanBePartOfEightMemberFamily(*itA, *itB, constant, mul, falseBinary)){
+                    counter -= mul;
+
+                    unsigned mulPlus = 0;
+                    while(counter >= 8){
+                        if(primeSet.count(constant+(mul+mulPlus)*falseBinary) == 0){
+                            counter--;
+                        } else {
+                            if (mul + mulPlus == 9){
+                                cout << "From A = " << *itA << " and B = " << *itB << "\n";
+                                for(unsigned i = 0; i <= 9; i++){
+                                    cout << constant << " + " << i << "*" << falseBinary << " = " << constant+(i)*falseBinary << " is prime ? " << primeSet.count(constant+(i)*falseBinary) << "\n";
+                                }
+                                cout << *itB << "\n";
+                                return;
+                            }
+                        }
+
+                        mulPlus++;
+                    }
+                }
+            }
+        }
+
+
+        primeSet.clear();
+        roof *= 10;
+    }
 }
