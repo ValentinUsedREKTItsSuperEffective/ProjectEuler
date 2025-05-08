@@ -24,7 +24,7 @@ is part of an eight prime value family.
 
 Answer: 121313 (4515.46ms)
 
-Tags:
+Tags: Prime, XOR swap
 */
 
 /*
@@ -35,7 +35,15 @@ The number of replaced digits is unknown.
 
 The most right digit cannot be replaced to match an eight prime value family because prime number cannot end with 2, 4, 5, 6, 8, 0.
 
-A family member is composed of a constant C, plus a multiplicator of [0, 1, ..., 9] * FalseBinary, that is to say a number composed of 0 and 1 only.
+A family member is composed of a constant C, plus a multiplicator of [0, 1, ..., 9] * FalseBinary, FalseBinary a number composed of 0 and 1 only:
+
+                                                            56003 + 0 * 00110 = 56003
+                                                            56003 + 1 * 00110 = 56113
+                                                            56003 + 3 * 00110 = 56333
+                                                            56003 + 4 * 00110 = 56443
+                                                            56003 + 6 * 00110 = 56663
+                                                            56003 + 7 * 00110 = 56773
+                                                            56003 + 9 * 00110 = 56993.
 */
 
 bool CanBePartOfEightMemberFamily(unsigned A, unsigned B, unsigned& constant, unsigned& expectedMultiplicatorB, unsigned& falseBinary){
@@ -95,22 +103,6 @@ bool CanBePartOfEightMemberFamily(unsigned A, unsigned B, unsigned& constant, un
 }
 
 void ProjectEuler051(){
-    /*
-    From A = 205837 and B = 104827
-    4294870103 + 0*101010 = 4294870103 is prime ? 0
-    4294870103 + 1*101010 = 3817 is prime ? 0
-    4294870103 + 2*101010 = 104827 is prime ? 1
-    4294870103 + 3*101010 = 205837 is prime ? 1
-    4294870103 + 4*101010 = 306847 is prime ? 1
-    4294870103 + 5*101010 = 407857 is prime ? 1
-    4294870103 + 6*101010 = 508867 is prime ? 1
-    4294870103 + 7*101010 = 609877 is prime ? 1
-    4294870103 + 8*101010 = 710887 is prime ? 1
-    4294870103 + 9*101010 = 811897 is prime ? 1
-    */
-    unsigned a,b,c;
-    CanBePartOfEightMemberFamily(205837, 104827, a, b, c);
-
     auto primes = PEUtility::EratostheneSieve(1000000);
 
     // Sort primes depending on their rightmost digit
@@ -129,6 +121,7 @@ void ProjectEuler051(){
 
             it++;
 
+            // condition to prevent an early exit because it reach the end()
             if(it != primes.end()){
                 continue;
             }
@@ -150,10 +143,6 @@ void ProjectEuler051(){
                             counter--;
                         } else {
                             if (mul + mulPlus == 9){
-                                cout << "From A = " << *itA << " and B = " << *itB << "\n";
-                                for(unsigned i = 0; i <= 9; i++){
-                                    cout << constant << " + " << i << "*" << falseBinary << " = " << constant+(i)*falseBinary << " is prime ? " << primeSet.count(constant+(i)*falseBinary) << "\n";
-                                }
                                 cout << *itB << "\n";
                                 return;
                             }
