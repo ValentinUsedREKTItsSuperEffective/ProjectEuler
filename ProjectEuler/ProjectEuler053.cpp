@@ -20,9 +20,9 @@ It is not until n = 23, that a value exceeds one-million: (    ) = 1144066.
                                                 n
 How many, not necessarily distinct, values of (   ) for 1 <= n <= 100, are greater than one-million?
                                                 r
-Answer:
+Answer: 4075 (2.031ms)
 
-Tags: Combinatorics
+Tags: BinomialCoeficient
 */
 
 /*
