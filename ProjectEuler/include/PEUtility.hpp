@@ -28,6 +28,8 @@ class PEUtility {
         static unsigned int UIntLength(unsigned int value);
         static bool IsPandigital(unsigned int value);
 
+        static unsigned long long BinomialCoeficient(unsigned long long n, unsigned long long k);
+
     private:
         static const float epsilon;
     };

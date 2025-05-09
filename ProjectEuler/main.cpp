@@ -70,6 +70,9 @@ int main(){
     assert(PEUtility::IsPandigital(3201) == false);
     assert(PEUtility::IsPandigital(98765431) == false);
     assert(PEUtility::IsPandigital(887645321) == false);
+    assert(PEUtility::BinomialCoeficient(10,2) == PEUtility::BinomialCoeficient(10,8));
+    assert(PEUtility::BinomialCoeficient(40,20) == 137846528820LL); // ProjectEuler015
+    assert(PEUtility::BinomialCoeficient(23,10) == 1144066);
 
     assert(ProjectEuler032() == 45228LL);
     assert(ProjectEuler038() == 932718654);

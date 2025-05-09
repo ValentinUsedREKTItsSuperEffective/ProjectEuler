@@ -166,3 +166,36 @@ bool PEUtility::IsPandigital(unsigned int n){
     // set is sorted. So the last digit in setN should be the size of setN for a pandigital number
     return *setN.rbegin() == setN.size() && UIntLength(n) == setN.size();
 }
+
+// See : https://en.wikipedia.org/wiki/Binomial_coefficient
+unsigned long long PEUtility::BinomialCoeficient(unsigned long long n, unsigned long long k){
+    if(k > n){
+        throw std::invalid_argument("k cannot be greater than n in binomial coefficient");
+    }
+
+    unsigned long long result = 1;
+
+    /*
+    Reduce the number of test case by choosing the minimum k as we will iterate on k
+    i.e. with (10 8)
+    (10 8) = (10 2) = 10! / 2!*8! = (10 * 9) / (2 * 1)
+
+    This is possible because we can write n! / k!(n-k)! like n! / (n-k)!k!
+    cf Triangle Pascal
+    */
+
+    unsigned diff = n - k;
+    if (k > diff){
+        k = diff;
+    }
+
+    for (unsigned long long i = 1; i <= k; i++, n--) {
+        result = result / i * n + result % i * n / i;  // split result * n / i into (result / i * i + result % i) * n / i
+
+        if (result >= ULONG_LONG_MAX) {
+            throw std::overflow_error("Exceed ULONG_LONG_MAX limit");
+        }
+    }
+
+  return result;
+}
