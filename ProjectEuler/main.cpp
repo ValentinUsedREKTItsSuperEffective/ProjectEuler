@@ -62,6 +62,7 @@ void ProjectEuler049();
 void ProjectEuler050();
 void ProjectEuler051();
 void ProjectEuler052();
+unsigned ProjectEuler053();
 
 int main(){
 #ifdef TEST
@@ -76,6 +77,7 @@ int main(){
 
     assert(ProjectEuler032() == 45228LL);
     assert(ProjectEuler038() == 932718654);
+    assert(ProjectEuler053() == 4075);
 
     /*
     PEUtility::EratostheneSieve(1000000);
@@ -106,7 +108,7 @@ int main(){
 
     std::chrono::steady_clock::time_point startTimePoint = std::chrono::steady_clock::now();
 
-    ProjectEuler052();
+    ProjectEuler053();
 
     std::chrono::steady_clock::time_point endTimePoint = std::chrono::steady_clock::now();
     cout << "Elapsed time: " << std::chrono::duration_cast<std::chrono::microseconds>(endTimePoint - startTimePoint).count() / 1000.0 << "ms\n";
