@@ -41,22 +41,31 @@ vector<unsigned char> PEUtility::BreakNumber(unsigned long long n){
     return ret;
 }
 
+// See: https://fr.wikipedia.org/wiki/Crible_d%27%C3%89ratosth%C3%A8ne
 vector<unsigned int>& PEUtility::EratostheneSieve(unsigned int limit){
-    vector<bool> isPrime = {false, false}; // 0 & 1 aren't primes
-    for(unsigned int i = 2; i <= limit; i++){
-        isPrime.push_back(true);
+    vector<bool> isPrime = {false, false, true}; // 0 & 1 aren't primes, 2 is prime
+    Primes.push_back(2);
+
+    for(unsigned int i = 3; i <= limit; i++){
+        // set even(fr: pair) numbers as false
+        isPrime.push_back(i%2 == 1);
     }
 
-    unsigned int prime = 2;
+    unsigned int prime = 3;
     while(prime * prime <= limit){
-        for(unsigned int i = prime * prime; i <= limit; i += prime){ // i start a prime * prime is the same logic than why we stop the sieve at prime^2 <= limit
+        // i starting at prime * prime is the same logic than why we stop the sieve at prime^2 <= limit
+        for(unsigned int i = prime * prime; i <= limit; i += prime){
             isPrime[i] = false;
         }
 
-        while(!isPrime[++prime]){} // find the next prime number
+        // find the next prime number
+        do{
+            prime += 2;
+        }while(!isPrime[prime]);
     }
 
-    for(unsigned int i = 0; i <= limit; i++){
+    // 2 already in Primes, start from 3 and ignore even numbers
+    for(unsigned int i = 3; i <= limit; i+=2){
         if(isPrime[i])
             Primes.push_back(i);
     }
