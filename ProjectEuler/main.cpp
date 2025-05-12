@@ -66,6 +66,7 @@ unsigned ProjectEuler053();
 
 int main(){
 #ifdef TEST
+    cout << "===== Start Tests =====\n";
     assert(PEUtility::BreakNumber((unsigned)3201).size() == 4);
     assert(PEUtility::BreakNumber((unsigned long long)3201).size() == 4);
     assert(PEUtility::IsPandigital(3201) == false);
@@ -79,8 +80,24 @@ int main(){
     assert(ProjectEuler038() == 932718654);
     assert(ProjectEuler053() == 4075);
 
+    cout << "----- Primes -----\n";
+    auto primes = PEUtility::EratostheneSieve(1000000);
+    assert(primes.size() == 78498);
+    assert(primes.at(0) == 2);
+    assert(primes.at(29) == 113);
+    assert(primes.at(37) == 163);
+    assert(primes.at(42) == 191);
+    assert(primes.at(92) == 487);
+    assert(primes.at(376) == 2591);
+    assert(primes.at(735) == 5573);
+    assert(primes.at(837) == 6451);
+    assert(primes.at(985) == 7789);
+    assert(primes.at(2874) == 26161);
+    assert(primes.at(5983) == 59183);
+    assert(primes.at(7847) == 80153);
+    assert(primes.at(8374) == 86143);
+    assert(primes.at(78497) == 999983);
     /*
-    PEUtility::EratostheneSieve(1000000);
     assert(PEUtility::IsPrime(1) == false);
     assert(PEUtility::IsPrime(11) == true);
     assert(PEUtility::IsPrime(17) == true);
@@ -104,6 +121,7 @@ int main(){
     assert(PEUtility::IsPrime(11025) == false);
     assert(PEUtility::IsPrime(11265) == false);
     */
+    cout << "===== End Tests =====\n";
 #endif // TEST
 
     std::chrono::steady_clock::time_point startTimePoint = std::chrono::steady_clock::now();
