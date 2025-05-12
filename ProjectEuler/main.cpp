@@ -97,7 +97,7 @@ int main(){
     assert(primes.at(7847) == 80153);
     assert(primes.at(8374) == 86143);
     assert(primes.at(78497) == 999983);
-    /*
+
     assert(PEUtility::IsPrime(1) == false);
     assert(PEUtility::IsPrime(11) == true);
     assert(PEUtility::IsPrime(17) == true);
@@ -120,7 +120,6 @@ int main(){
     assert(PEUtility::IsPrime(10845) == false);
     assert(PEUtility::IsPrime(11025) == false);
     assert(PEUtility::IsPrime(11265) == false);
-    */
     cout << "===== End Tests =====\n";
 #endif // TEST
 
