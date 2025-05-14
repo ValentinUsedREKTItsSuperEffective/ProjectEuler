@@ -2,7 +2,6 @@
 #include <fstream>
 #include <array>
 #include <map>
-#include <set>
 #include <algorithm>
 #include "PEUtility.hpp"
 
@@ -57,721 +56,364 @@ each player's hand is in no specific order, and in each hand there is a clear wi
 
 How many hands does Player 1 win?
 
-Answer:
+Answer: 376 (3.572ms)
 
-Tags:
+Tags: Poker
 */
 
 /*
 Thoughts:
+There is no TIE possible
 */
 
-// Include Royal flush
-// Return highest card value
-unsigned short IsStraightFlush(const array<unsigned short, 4>& hand){
-    for(unsigned short suit: hand){
-        if (suit == 0){
-            continue;
-        }
+struct Card{
+    unsigned char value = 0;
+    unsigned char suit = 0;
 
-        for(unsigned short i = 1; i <= 256 /* = '9' */; i *= 2){
-            // '==' operator has higher priority than '&' operator
-            if((suit & i) == i){
-                unsigned short expectedHand = i + i*2 + i*4 + i*8 + i*16;
-                return suit == expectedHand ? i*16 : 0;
+    bool operator==(const Card& o){
+        return o.value == value;
+    }
+
+    bool operator==(const unsigned char v){
+        return v == value;
+    }
+};
+
+struct Hand{
+    array<Card, 5> cards = {};
+
+    void Add(unsigned char value, unsigned char suit){
+        unsigned char index = 0;
+        while(cards[index].value != 0){
+            index++;
+            if(index >= 5){
+                return;
             }
         }
+
+        cards[index].value = value;
+        cards[index].suit = suit;
+    }
+
+    bool IsHandFull(){
+        return cards[4].value > 0;
+    }
+
+    void Clear(){
+        cards = {};
+    }
+
+    void Swap(unsigned char index, unsigned char index2){
+        Card tmp = cards[index];
+        cards[index] = cards[index2];
+        cards[index2] = tmp;
+    }
+
+    bool IsPair(){
+        if(cards[0] == cards[1]){
+            return true;
+        }
+
+        if(cards[1] == cards[2]){
+            Swap(0, 2);
+            if(cards[0].value != cards[1].value){
+                cout << "TROUBLE\n";
+            }
+            return true;
+        }
+
+        if(cards[2] == cards[3]){
+            Swap(0, 2);
+            Swap(1, 3);
+            if(cards[0].value != cards[1].value){
+                cout << "TROUBLE\n";
+            }
+            return true;
+        }
+
+        if(cards[3] == cards[4]){
+            Swap(0, 3);
+            Swap(1, 4);
+            if(cards[0].value != cards[1].value){
+                cout << "TROUBLE\n";
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    bool IsDoublePair(){
+        if(cards[0] == cards[1] && cards[2] == cards[3]){
+            return true;
+        }
+
+        if(cards[0] == cards[1] && cards[3] == cards[4]){
+            Swap(2, 4);
+            return true;
+        }
+
+        if(cards[1] == cards[2] && cards[3] == cards[4]){
+            Swap(0, 2);
+            Swap(2, 4);
+            return true;
+        }
+
+        return false;
+    }
+
+    bool IsThreeOfAKind(){
+        if(cards[0] == cards[2]){
+            return true;
+        }
+
+        if(cards[1] == cards[3]){
+            Swap(0, 3);
+            return true;
+        }
+
+        if(cards[2] == cards[4]){
+            Swap(0, 3);
+            Swap(1, 4);
+            return true;
+        }
+
+        return false;
+    }
+
+    bool IsStraight(){
+        // Case [A, 2, 3, 4, 5]
+        if (cards[0].value == 14 /* = 'A' */ && cards[1] == 5 /* = '5' */){
+            return cards[2] == 4 && cards[3] == 3 && cards[4] == 2;
+        }
+
+        for(unsigned char i = 0; i < 4; i++){
+            if(cards[i].value != cards[i+1].value + 1){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool IsFlush(){
+        unsigned char suit = cards[0].suit;
+        for(unsigned char i = 1; i < 5; i++){
+            if(cards[i].suit != suit){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool IsFullHouse(){
+        if(cards[0] == cards[2] && cards[3] == cards[4]){
+            return true;
+        }
+
+        if (cards[0] == cards[1] && cards[2] == cards[4]){
+            std::sort(cards.begin(), cards.end(), [](Card a, Card b){ return a.value < b.value; });
+            return true;
+        }
+
+        return false;
+    }
+
+    bool IsFourOfAKind(){
+        if(cards[0].value == cards[3].value){
+            return true;
+        }
+
+        if(cards[1].value == cards[4].value){
+            Swap(0, 4);
+            return true;
+        }
+
+        return false;
+    }
+
+    bool IsStraightFlush(){
+        return IsStraight() && IsFlush();
+    }
+
+    void SortByValue(){
+        std::sort(cards.begin(), cards.end(), [](Card a, Card b){ return a.value > b.value; });
+    }
+
+    bool operator>(const Hand& other){
+        for(unsigned char i = 0; i < 5; i++){
+            if(cards[i].value > other.cards[i].value){
+                return true;
+            }
+
+            if(cards[i].value < other.cards[i].value){
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    string ToString(){
+        string str = "";
+
+        const map<unsigned char, unsigned char> values = {
+            {2, '2'},{3, '3'},{4, '4'},{5, '5'},{6,'6'},{7, '7'},{8, '8'},
+            {9, '9'},{10, 'T'},{11, 'J'},{12, 'Q'}, {13, 'K'}, {14, 'A'}
+        };
+
+        const map<unsigned char, unsigned char> suits = {
+            {0, 'S'},{1, 'H'},{2, 'D'},{3, 'C'}
+        };
+
+        for(Card c: cards){
+            str += values.at(c.value);
+            str += suits.at(c.suit);
+            str += " ";
+        }
+
+        return str;
+    }
+};
+
+char CompareHands(Hand& h1, bool hasRankHand_1, const Hand& h2, bool hasRankHand_2){
+    if(hasRankHand_2 && !hasRankHand_1){
+        return -1;
+    }
+
+    if(hasRankHand_1 && !hasRankHand_2){
+        return 1;
+    }
+
+    if(hasRankHand_1 && hasRankHand_2){
+        if(h1 > h2){
+            return 1;
+        }
+
+        return -1;
     }
 
     return 0;
-}
-
-// Return value of the "four of a kind"
-unsigned short IsFourOfAKind(const array<unsigned short, 4>& hand, unsigned short& kicker){
-    unsigned short kind = 0;
-    for(unsigned short suit: hand){
-        if(suit == 0){
-            // each suit should have a value > 0 to be Four of a kind
-            return 0;
-        }
-
-        if(suit != kind){
-            if (kind == 0){
-                kind = suit;
-            } else {
-                if(kicker == 0){
-                    if(suit > kind){
-                        kicker = suit - kind;
-                    } else {
-                        kicker = kind - suit;
-                    }
-                } else {
-                    // The hand has at least 3 different values
-                    return 0;
-                }
-            }
-        }
-    }
-
-    return kind;
-}
-
-// Return value of the "three of a kind"
-unsigned short IsFullHouse(const array<unsigned short, 4>& hand, unsigned short& pair){
-    array<unsigned short, 2> values = {};
-    array<unsigned short, 2> counters = {};
-
-    for(unsigned short suit: hand){
-        if(suit == 0){
-            continue;
-        }
-
-        for(unsigned short i = 1; i <= 4096 /* = 'A' */; i *= 2){
-            unsigned short v = suit & i;
-            if(v == 0){
-                continue;
-            }
-
-            if(values[0] == 0){
-                values[0] = v;
-                counters[0]++;
-                continue;
-            }
-
-            if(values[0] == v){
-                counters[0]++;
-                continue;
-            }
-
-            if(values[1] == 0){
-                values[1] = v;
-                counters[1]++;
-                continue;
-            }
-
-            if(values[1] == v){
-                counters[1]++;
-                continue;
-            }
-
-            // more than two different values
-            return 0;
-        }
-    }
-
-    if(counters[0] == 3 && counters[1] == 2){
-        pair = values[1];
-        return values[0];
-    }
-
-    if(counters[1] == 3 && counters[0] == 2){
-        pair = values[0];
-        return values[1];
-    }
-
-    // Error
-    return 0;
-}
-
-// Return hand value
-unsigned short IsFlush(const array<unsigned short, 4>& hand){
-    unsigned short flushValue = 0;
-
-    for(unsigned short suit: hand){
-        if(suit == 0){
-            continue;
-        }
-
-        if(flushValue == 0){
-            flushValue = suit;
-        } else {
-            // more than 1 suit has value
-            return 0;
-        }
-    }
-
-    return flushValue;
-}
-
-// Return highest card value
-unsigned short IsStraight(const array<unsigned short, 4>& hand){
-    for(unsigned short i = 1; i <= 256 /* = '9' */; i *= 2){
-        if(hand[0] & i == i || hand[1] & i == i || hand[2] & i == i || hand[3] & i == i){
-            if(hand[0] + hand[1] + hand[2] + hand[3] == i + i*2 + i*4 + i*8 + i*16){
-                return i*16;
-            }
-
-            // not a straight
-            return 0;
-        }
-    }
-}
-
-unsigned short IsThreeOfAKind(const array<unsigned short, 4>& hand, array<unsigned short, 2>& kickers){
-    array<unsigned short, 3> values = {};
-    array<unsigned short, 3> counters = {};
-
-    for(unsigned short suit: hand){
-        if(suit == 0){
-            continue;
-        }
-
-        for(unsigned short i = 1; i <= 4096 /* = 'A' */; i *= 2){
-            unsigned short v = suit & i;
-            if(v == 0){
-                continue;
-            }
-
-            if(values[0] == 0){
-                values[0] = v;
-                counters[0]++;
-                continue;
-            }
-
-            if(values[0] == v){
-                counters[0]++;
-                continue;
-            }
-
-            if(values[1] == 0){
-                values[1] = v;
-                counters[1]++;
-                continue;
-            }
-
-            if(values[1] == v){
-                counters[1]++;
-                continue;
-            }
-
-            if(values[2] == 0){
-                values[2] = v;
-                counters[2]++;
-                continue;
-            }
-
-            if(values[2] == v){
-                counters[2]++;
-                continue;
-            }
-
-            // more than two different values
-            return 0;
-        }
-    }
-
-    unsigned short kind = 0;
-    for(unsigned char i = 0; i < 3; i++){
-        if(counters[i] == 3){
-            kind = values[i];
-        } else {
-            if(kickers[0] == 0) {
-                kickers[0] = values[i];
-            } else {
-                if(values[i] > kickers[0]){
-                    kickers[1] = kickers[0];
-                    kickers[0] = values[i];
-                } else {
-                    kickers[1] = values[i];
-                }
-            }
-        }
-    }
-
-    return kind;
-}
-
-unsigned short IsDoublePair(const array<unsigned short, 4>& hand, unsigned short& kicker){
-    array<unsigned short, 3> values = {};
-    array<unsigned short, 3> counters = {};
-
-    for(unsigned short suit: hand){
-        if(suit == 0){
-            continue;
-        }
-
-        for(unsigned short i = 1; i <= 4096 /* = 'A' */; i *= 2){
-            unsigned short v = suit & i;
-            if(v == 0){
-                continue;
-            }
-
-            if(values[0] == 0){
-                values[0] = v;
-                counters[0]++;
-                continue;
-            }
-
-            if(values[0] == v){
-                counters[0]++;
-                continue;
-            }
-
-            if(values[1] == 0){
-                values[1] = v;
-                counters[1]++;
-                continue;
-            }
-
-            if(values[1] == v){
-                counters[1]++;
-                continue;
-            }
-
-            if(values[2] == 0){
-                values[2] = v;
-                counters[2]++;
-                continue;
-            }
-
-            if(values[2] == v){
-                counters[2]++;
-                continue;
-            }
-
-            // more than two different values
-            return 0;
-        }
-    }
-
-    unsigned short DoublePair = 0;
-    for(unsigned char i = 0; i < 3; i++){
-        if(counters[i] == 2){
-            DoublePair = values[i];
-        } else {
-            kicker = values[i];
-        }
-    }
-
-    return DoublePair;
-}
-
-unsigned short IsPair(const array<unsigned short, 4>& hand, multiset<unsigned short>& kickers){
-    array<unsigned short, 4> values = {};
-    array<unsigned short, 4> counters = {};
-
-    for(unsigned short suit: hand){
-        if(suit == 0){
-            continue;
-        }
-
-        for(unsigned short i = 1; i <= 4096 /* = 'A' */; i *= 2){
-            unsigned short v = suit & i;
-            if(v == 0){
-                continue;
-            }
-
-            if(values[0] == 0){
-                values[0] = v;
-                counters[0]++;
-                continue;
-            }
-
-            if(values[0] == v){
-                counters[0]++;
-                continue;
-            }
-
-            if(values[1] == 0){
-                values[1] = v;
-                counters[1]++;
-                continue;
-            }
-
-            if(values[1] == v){
-                counters[1]++;
-                continue;
-            }
-
-            if(values[2] == 0){
-                values[2] = v;
-                counters[2]++;
-                continue;
-            }
-
-            if(values[2] == v){
-                counters[2]++;
-                continue;
-            }
-
-            if(values[3] == 0){
-                values[3] = v;
-                counters[3]++;
-                continue;
-            }
-
-            if(values[3] == v){
-                counters[3]++;
-                continue;
-            }
-
-            // more than two different values
-            return 0;
-        }
-    }
-
-    unsigned short pair = 0;
-    for(unsigned char i = 0; i < 3; i++){
-        if(counters[i] == 2){
-            pair = values[i];
-        } else {
-            kickers.insert(values[i]);
-        }
-    }
-
-    return pair;
-}
-
-void ToMultiset(const array<unsigned short, 4>& hand, multiset<unsigned short>& handset){
-    for(unsigned short suit: hand){
-        if(suit == 0){
-            continue;
-        }
-
-        for(unsigned short i = 1; i <= 4096 /* = 'A' */; i *= 2){
-            unsigned short v = suit & i;
-            if(v == 0){
-                continue;
-            }
-
-            handset.insert(v);
-        }
-    }
 }
 
 void ProjectEuler054(){
-    array<unsigned short, 4> player1Hand = array<unsigned short, 4>();
-    array<unsigned short, 4> player2Hand = array<unsigned short, 4>();
+    Hand player1Hand = {};
+    Hand player2Hand = {};
 
-    const map<char, unsigned short> values = {
-        {'2', 1},{'3', 2},{'4', 4},{'5', 8},{'6', 16},{'7', 32},{'8', 64},
-        {'9', 128},{'T', 256},{'J', 512},{'Q', 1024}, {'K', 2048}, {'A', 4096}
+    const map<unsigned char, unsigned char> values = {
+        {'2', 2},{'3', 3},{'4', 4},{'5', 5},{'6', 6},{'7', 7},{'8', 8},
+        {'9', 9},{'T', 10},{'J', 11},{'Q', 12}, {'K', 13}, {'A', 14}
     };
 
-    const map<char, char> suits = {
+    const map<unsigned char, unsigned char> suits = {
         {'S', 0},{'H', 1},{'D', 2},{'C', 3}
     };
 
-    unsigned player1WinCounter = 0;
-
-/*
-    cout << "--- Royal flush ---\n";
-    player1Hand = {0, 0, 0, 7936};
-    cout << (IsStraightFlush(player1Hand) > 0)<< "\n";
-    player2Hand = {0, 7935, 0, 1};
-    cout << (IsStraightFlush(player2Hand) > 0) << "\n";
-
-    cout << "--- Straight flush ---\n";
-    player1Hand = {0, 0, 496, 0};
-    cout << IsStraightFlush(player1Hand) << "\n";
-    player1Hand = {0, 0, 0, 0};
-    cout << IsStraightFlush(player1Hand) << "\n";
-    player1Hand = {0, 16, 480, 0};
-    cout << IsStraightFlush(player1Hand) << "\n";
-
-    cout << "--- Four of a kind ---\n";
-    unsigned short k = 0;
-    player1Hand = {1024, 1024, 1025, 1024};
-    cout << (IsFourOfAKind(player1Hand, k) == 1024 && k == 1)<< "\n";
-    player1Hand = {1024, 1024, 514, 1024};
-    cout << (IsFourOfAKind(player1Hand, k) == 0)<< "\n";
-
-    cout << "--- Full house ---\n";
-    player1Hand = {1024, 1024, 1025, 1024};
-    cout << (IsFourOfAKind(player1Hand, k) == 1024 && k == 1)<< "\n";
-
-    return;
-    */
+    unsigned winCounter = 0;
 
     ifstream pokerFile;
     string line;
     pokerFile.open("../Resources/0054_poker.txt");
     if (pokerFile.is_open()){
         while ( std::getline (pokerFile,line) ){
-            player1Hand = {};
-            player2Hand = {};
+            player1Hand.Clear();
+            player2Hand.Clear();
 
-            // cout << line << "\n";
-            unsigned char player1Cards = 5;
             for(auto it = line.begin(); it != line.end(); it++){
                 if(' ' == *it || '\n' == *it){
                     continue;
                 }
 
-                unsigned short value = values.at(*it);
-                char suit = suits.at(*(++it));
-                if(player1Cards){
-                    player1Hand[suit] += value;
-                    player1Cards--;
+                unsigned char value = values.at(*it);
+                unsigned char suit = suits.at(*(++it));
+                if(!player1Hand.IsHandFull()){
+                    player1Hand.Add(value, suit);
                 } else {
-                    player2Hand[suit] += value;
+                    player2Hand.Add(value, suit);
                 }
             }
+
+            player1Hand.SortByValue();
+            player2Hand.SortByValue();
 
             // --- Treat hands ---
-            unsigned short v1 = IsStraightFlush(player1Hand);
-            unsigned short v2 = IsStraightFlush(player2Hand);
-            if(v2 > v1){
-                // p2 win
-                continue;
-            }
-
-            if(v1 > 0){
-                if(v2 == v1){
-                    // tie
-                    continue;
+            char comp = CompareHands(player1Hand, player1Hand.IsStraightFlush(), player2Hand, player2Hand.IsStraightFlush());
+            if(0 != comp){
+                if(1 == comp){
+                    winCounter++;
                 }
-
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " straight flush\n";
                 continue;
             }
 
-            unsigned short player1Kicker = 0;
-            unsigned short player2Kicker = 0;
-            v1 = IsFourOfAKind(player1Hand, player1Kicker);
-            v2 = IsFourOfAKind(player2Hand, player2Kicker);
-            if(v2 > v1){
-                // p2 win
-                continue;
-            }
-
-            if(v2 == v1 && v1 > 0){
-                if(player2Kicker > player1Kicker) {
-                    // p2 win by kicker
-                    continue;
+            comp = CompareHands(player1Hand, player1Hand.IsFourOfAKind(), player2Hand, player2Hand.IsFourOfAKind());
+            if(0 != comp){
+                if(1 == comp){
+                    winCounter++;
                 }
+                continue;
+            }
 
-                if(player1Kicker == player2Kicker){
-                    // tie
-                    continue;
+            comp = CompareHands(player1Hand, player1Hand.IsFullHouse(), player2Hand, player2Hand.IsFullHouse());
+            if(0 != comp){
+                if(1 == comp){
+                    winCounter++;
                 }
-
-                // p1 win by kicker
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " kind of four\n";
                 continue;
             }
 
-            if(v1 > 0){
-                // p1 win
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " kind of four(kicker)\n";
-                continue;
-            }
-
-            unsigned short player1Pair = 0;
-            unsigned short player2Pair = 0;
-            v1 = IsFullHouse(player1Hand, player1Pair);
-            v2 = IsFullHouse(player2Hand, player2Pair);
-            if(v2 > v1){
-                // p2 win by full house
-                continue;
-            }
-
-            if(v2 == v1 && v1 > 0){
-                if(player2Pair > player1Pair) {
-                    // p2 win by higher pair
-                    continue;
+            comp = CompareHands(player1Hand, player1Hand.IsFlush(), player2Hand, player2Hand.IsFlush());
+            if(0 != comp){
+                if(1 == comp){
+                    winCounter++;
                 }
+                continue;
+            }
 
-                if(player1Pair == player2Pair){
-                    // tie
-                    continue;
+            comp = CompareHands(player1Hand, player1Hand.IsStraight(), player2Hand, player2Hand.IsStraight());
+            if(0 != comp){
+                if(1 == comp){
+                    winCounter++;
                 }
-
-                // p1 win by higherPair
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " full house\n";
                 continue;
             }
 
-            if(v1 > 0){
-                // p1 win by full house
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " full house\n";
-                continue;
-            }
-
-            v1 = IsFlush(player1Hand);
-            v2 = IsFlush(player2Hand);
-            if(v2 > v1){
-                // p2 win
-                continue;
-            }
-
-            if(v1 > 0){
-                if(v2 == v1){
-                    // tie
-                    continue;
+            comp = CompareHands(player1Hand, player1Hand.IsThreeOfAKind(), player2Hand, player2Hand.IsThreeOfAKind());
+            if(0 != comp){
+                if(1 == comp){
+                    winCounter++;
                 }
-
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " flush\n";
                 continue;
             }
 
-            v1 = IsStraight(player1Hand);
-            v2 = IsStraight(player2Hand);
-            if(v2 > v1){
-                // p2 win
-                continue;
-            }
-
-            if(v1 > 0){
-                if(v2 == v1){
-                    // tie
-                    continue;
+            comp = CompareHands(player1Hand, player1Hand.IsDoublePair(), player2Hand, player2Hand.IsDoublePair());
+            if(0 != comp){
+                if(1 == comp){
+                    winCounter++;
                 }
-
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " straight\n";
                 continue;
             }
 
-            array<unsigned short, 2> player1Kickers = {};
-            array<unsigned short, 2> player2Kickers = {};
-            v1 = IsThreeOfAKind(player1Hand, player1Kickers);
-            v2 = IsThreeOfAKind(player2Hand, player2Kickers);
-            if(v2 > v1){
-                // p2 win
-                continue;
-            }
-
-            if(v2 == v1 && v1 > 0){
-                if(player2Kickers[0] > player1Kickers[0]) {
-                    // p2 win by kicker
-                    continue;
+            comp = CompareHands(player1Hand, player1Hand.IsPair(), player2Hand, player2Hand.IsPair());
+            if(0 != comp){
+                if(1 == comp){
+                    winCounter++;
                 }
+                continue;
+            }
 
-                if(player1Kickers[0] == player2Kickers[0]){
-                    if(player2Kickers[1] > player1Kickers[1]) {
-                        // p2 win by kicker
-                        continue;
-                    }
-
-                    if(player1Kickers[1] == player1Kickers[1]){
-                        // tie
-                        continue;
-                    }
-
-                    // p1 win by kicker
-                    cout << line << "\n";
-                    player1WinCounter++;
-                    cout << player1WinCounter << " kind of three(kicker)\n";
-                    continue;
+            comp = CompareHands(player1Hand, true, player2Hand, true);
+            if(0 != comp){
+                if(1 == comp){
+                    winCounter++;
                 }
-
-                // p1 win by kicker
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " kind of three(kicker)\n";
                 continue;
             }
-
-            if(v1 > 0){
-                // p1 win
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " kind of three\n";
-                continue;
-            }
-
-            v1 = IsDoublePair(player1Hand, player1Kicker);
-            v2 = IsDoublePair(player2Hand, player2Kicker);
-            if(v2 > v1){
-                // p2 win
-                continue;
-            }
-
-            if(v2 == v1 && v1 > 0){
-                if(player2Kicker > player1Kicker) {
-                    // p2 win by kicker
-                    continue;
-                }
-
-                if(player1Kicker == player2Kicker){
-                    // tie
-                    continue;
-                }
-
-                // p1 win by kicker
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " double pair(kicker)\n";
-                continue;
-            }
-
-            if(v1 > 0){
-                // p1 win
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " double pair\n";
-                continue;
-            }
-
-            multiset<unsigned short> player1KickersMultiset = {};
-            multiset<unsigned short> player2KickersMultiset = {};
-            v1 = IsPair(player1Hand, player1KickersMultiset);
-            v2 = IsPair(player2Hand, player2KickersMultiset);
-            if(v2 > v1){
-                // p2 win
-                continue;
-            }
-
-            if(v2 == v1 && v1 > 0){
-                if(player2KickersMultiset > player1KickersMultiset) {
-                    // p2 win by kicker
-                    continue;
-                }
-
-                if(player2KickersMultiset == player1KickersMultiset){
-                    // tie
-                    continue;
-                }
-
-                // p1 win by kicker
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " pair(kicker)\n";
-                continue;
-            }
-
-            if(v1 > 0){
-                // p1 win
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " pair\n";
-                continue;
-            }
-
-            player1KickersMultiset.clear();
-            player2KickersMultiset.clear();
-            ToMultiset(player1Hand, player1KickersMultiset);
-            ToMultiset(player2Hand, player2KickersMultiset);
-            bool a_less_than_b = std::lexicographical_compare(
-                player1KickersMultiset.rbegin(), player1KickersMultiset.rend(),
-                player2KickersMultiset.rbegin(), player2KickersMultiset.rend()
-            );
-
-            if(!a_less_than_b){
-                cout << line << "\n";
-                player1WinCounter++;
-                cout << player1WinCounter << " highest\n";
-            }
-
             // --- Treat hands ---
         }
 
         pokerFile.close();
 
-        cout << player1WinCounter << "\n";
+        cout << winCounter << "\n";
     }
 }
