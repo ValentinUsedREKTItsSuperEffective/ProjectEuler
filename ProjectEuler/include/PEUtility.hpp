@@ -49,6 +49,8 @@ class PEUtility {
 
         static unsigned long long BinomialCoeficient(unsigned long long n, unsigned long long k);
 
+        static bool IsPalindrome(unsigned long long N);
+
     private:
         static const float epsilon;
     };

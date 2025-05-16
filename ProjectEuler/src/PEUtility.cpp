@@ -184,3 +184,15 @@ unsigned long long PEUtility::BinomialCoeficient(unsigned long long n, unsigned 
 
   return result;
 }
+
+bool PEUtility::IsPalindrome(unsigned long long N) {
+    vector<unsigned char> vecN = BreakIntegral<unsigned long long>(N);
+
+    for(int i = 0, j = vecN.size() - 1; j > i; i++, j--) {
+        if(vecN[i] != vecN[j]) {
+            return false;
+        }
+    }
+
+    return true;
+}
