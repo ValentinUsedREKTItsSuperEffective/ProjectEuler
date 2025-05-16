@@ -68,8 +68,9 @@ void ProjectEuler054();
 int main(){
 #ifdef TEST
     cout << "===== Start Tests =====\n";
-    assert(PEUtility::BreakNumber((unsigned)3201).size() == 4);
-    assert(PEUtility::BreakNumber((unsigned long long)3201).size() == 4);
+    assert(PEUtility::BreakIntegral<unsigned>(3201).size() == 4);
+    assert(PEUtility::BreakIntegral<unsigned>(3201) == std::vector<unsigned char>({3,2,0,1}));
+    assert(PEUtility::BreakIntegral<unsigned>(3201, true) == std::vector<unsigned char>({1,0,2,3}));
     assert(PEUtility::IsPandigital(3201) == false);
     assert(PEUtility::IsPandigital(98765431) == false);
     assert(PEUtility::IsPandigital(887645321) == false);

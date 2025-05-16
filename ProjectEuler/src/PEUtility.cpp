@@ -1,6 +1,5 @@
 #include "PEUtility.hpp"
 #include <map>
-#include <algorithm>
 #include <cmath>
 #include <set>
 #include <stdexcept>
@@ -16,29 +15,6 @@ const float PEUtility::epsilon = 0.0000001f;
 bool PEUtility::isNatural(float n){
     float r = std::round(n);
     return (n <= r + epsilon && n >= r - epsilon);
-}
-
-vector<unsigned char> PEUtility::BreakNumber(unsigned int n){
-    vector<unsigned char> ret = vector<unsigned char>();
-
-    while(n > 0){
-        ret.push_back(n % 10);
-        n /= 10;
-    }
-
-    return ret;
-}
-
-vector<unsigned char> PEUtility::BreakNumber(unsigned long long n){
-    vector<unsigned char> ret = vector<unsigned char>();
-
-    while(n > 0ll){
-        unsigned short v = n % 10ll;
-        ret.push_back(v);
-        n /= 10ll;
-    }
-
-    return ret;
 }
 
 // See: https://fr.wikipedia.org/wiki/Crible_d%27%C3%89ratosth%C3%A8ne
@@ -160,7 +136,7 @@ bool PEUtility::IsPandigital(unsigned int n){
         return false;
     }
 
-    vector<unsigned char> brokenN = BreakNumber(n);
+    vector<unsigned char> brokenN = BreakIntegral<unsigned>(n);
 
     // For a pandigital number, there should be no loss of cypher due to set uniqueness property
     set<unsigned char> setN = set<unsigned char>();

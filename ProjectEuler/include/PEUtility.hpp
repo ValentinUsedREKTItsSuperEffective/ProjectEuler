@@ -1,5 +1,7 @@
 #include <vector>
 #include <math.h>
+#include <algorithm>
+#include <type_traits>
 
 #ifndef PEUTILITY_H
 #define PEUTILITY_H
@@ -15,8 +17,25 @@ class PEUtility {
 
         static bool isNatural(float n);
 
-        static vector<unsigned char> BreakNumber(unsigned int);
-        static vector<unsigned char> BreakNumber(unsigned long long);
+        template<class T>
+        static vector<unsigned char> BreakIntegral(T n, bool performReverse = false){
+            static_assert(std::is_integral<T>::value, "PEUtility::BreakIntegral: Integral type required!");
+
+            vector<unsigned char> broken;
+
+            if(n == 0)
+                return {0};
+
+            while(n > 0){
+                broken.push_back(n % 10);
+                n /= 10;
+            }
+
+            if(!performReverse)
+                std::reverse(broken.begin(), broken.end());
+
+            return broken;
+        }
 
         static vector<unsigned int>& EratostheneSieve(unsigned int limit);
         static bool IsPrime(unsigned N);

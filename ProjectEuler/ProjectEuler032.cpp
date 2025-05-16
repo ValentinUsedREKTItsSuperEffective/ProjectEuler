@@ -41,7 +41,7 @@ bool IsNPandigital(unsigned short n, unsigned long long value){
         return false;
     }
 
-    vector<unsigned char> brokenValue = PEUtility::BreakNumber(value);
+    vector<unsigned char> brokenValue = PEUtility::BreakIntegral<unsigned long long>(value);
     vector<bool> bMap;
     bMap.assign(n+1, false);
     for (auto a : brokenValue) {
