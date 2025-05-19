@@ -7,7 +7,7 @@ using namespace std;
 
 class BigInteger{
     public:
-        unsigned char value[2000];
+        unsigned char value[2000]; // Todo: unsigned long long instead of unsigned char to reduce operation and complexity
         unsigned char sign = '\0'; // empty char
 
         BigInteger& operator=(int n);

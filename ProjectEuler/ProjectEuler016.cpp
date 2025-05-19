@@ -8,7 +8,7 @@ using namespace std;
 
 What is the sum of the digits of the number 2^1000?
 
-Answer: 1366
+Answer: 1366 (0.993ms)
 */
 
 void ProjectEuler016(){
