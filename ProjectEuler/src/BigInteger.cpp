@@ -1,6 +1,7 @@
 #include "BigInteger.hpp"
 #include <bits/stdc++.h>
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -104,4 +105,8 @@ void BigInteger::Print(){
         s = to_string(value[i]) + s;
     }
     cout << s << endl;
+}
+
+void BigInteger::PerformIntegrationTests(){
+
 }

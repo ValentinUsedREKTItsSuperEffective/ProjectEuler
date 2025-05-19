@@ -24,6 +24,7 @@ class BigInteger{
         friend bool operator <(const BigInteger& l, const BigInteger& r);
 
         void Print();
+        static void PerformIntegrationTests();
 
     private:
 };
