@@ -11,6 +11,12 @@ BigInteger& BigInteger::operator=(int n){
     return *this;
 }
 
+BigInteger& BigInteger::operator=(unsigned n){
+    *this = static_cast<unsigned long long>(n);
+
+    return *this;
+}
+
 BigInteger& BigInteger::operator=(long long n){
     memset(value, 0, sizeof(value));
 

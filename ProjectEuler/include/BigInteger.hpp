@@ -11,6 +11,7 @@ class BigInteger{
         unsigned char sign = '\0'; // empty char
 
         BigInteger& operator=(int n);
+        BigInteger& operator=(unsigned n);
         BigInteger& operator=(long long n);
         BigInteger& operator=(unsigned long long n);
         BigInteger& operator=(const BigInteger& bI);
