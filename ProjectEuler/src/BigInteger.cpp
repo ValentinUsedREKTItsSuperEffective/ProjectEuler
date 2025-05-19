@@ -5,12 +5,6 @@
 
 using namespace std;
 
-BigInteger::BigInteger(): size(1){
-    memset(value, 0, sizeof(value));
-}
-
-BigInteger::~BigInteger(){}
-
 BigInteger& BigInteger::operator=(int n){
     *this = static_cast<long long>(n);
 

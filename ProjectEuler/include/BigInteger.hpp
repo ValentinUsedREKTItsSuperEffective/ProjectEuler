@@ -9,10 +9,7 @@ class BigInteger{
     public:
         unsigned char value[2000];
         bool isNegative = false;
-        unsigned size;
-
-        BigInteger();
-        ~BigInteger();
+        unsigned size = 1;
 
         BigInteger& operator=(int n);
         BigInteger& operator=(long long n);
