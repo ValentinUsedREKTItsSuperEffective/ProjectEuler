@@ -143,6 +143,10 @@ bool operator<(const BigInteger& l, const BigInteger& r){
     return const_cast<BigInteger&>(l).operator <(r);
 }
 
+unsigned BigInteger::length(){
+    return size;
+}
+
 string BigInteger::ToString() const {
     string s = "";
     for(unsigned int i = 0; i < size; i++){
@@ -164,27 +168,27 @@ void BigInteger::PerformIntegrationTests(){
     BigInteger big;
     BigInteger big_2;
 
-    assert(big.size == 1);
+    assert(big.length() == 1);
     assert(big.sign == '\0');
     assert(big.ToString() == "0");
 
     big = -25;
-    assert(big.size == 2);
+    assert(big.length() == 2);
     assert(big.sign == '-');
     assert(big.ToString() == "-25");
 
     big = 18446744073709551612ULL;
-    assert(big.size == 20);
+    assert(big.length() == 20);
     assert(big.sign == '\0');
     assert(big.ToString() == "18446744073709551612");
 
     big = "-88370351051124936122493198378815695858127594672917553146825";
-    assert(big.size == 59);
+    assert(big.length() == 59);
     assert(big.sign == '-');
     assert(big.ToString() == "-88370351051124936122493198378815695858127594672917553146825");
 
     big_2 = big;
-    assert(big_2.size == 59);
+    assert(big_2.length() == 59);
     assert(big_2.sign == '-');
     assert(big_2.ToString() == "-88370351051124936122493198378815695858127594672917553146825");
 
@@ -192,7 +196,7 @@ void BigInteger::PerformIntegrationTests(){
     big_2 = "598457757469857480393456777482423";
 
     BigInteger sum = big + big_2;
-    assert(sum.size == 59);
+    assert(sum.length() == 59);
     assert(sum.sign == '\0');
     assert(sum.ToString() == "88370351051124936122493198977273453327985075066374330629248");
 
@@ -200,7 +204,7 @@ void BigInteger::PerformIntegrationTests(){
     big_2 = "88370351051124936122493198378815695858127594672917553146825";
 
     sum = big + big_2;
-    assert(sum.size == 59);
+    assert(sum.length() == 59);
     assert(sum.sign == '\0');
     assert(sum.ToString() == "88370351051124936122493198977273453327985075066374330629248");
 
@@ -208,7 +212,7 @@ void BigInteger::PerformIntegrationTests(){
     big_2 = "88370351051124936122493198378815695858127594672917553146825";
 
     sum = big + big_2;
-    assert(sum.size == 60);
+    assert(sum.length() == 60);
     assert(sum.sign == '\0');
     assert(sum.ToString() == "176740702102249872244986396757631391716255189345835106293650");
 }

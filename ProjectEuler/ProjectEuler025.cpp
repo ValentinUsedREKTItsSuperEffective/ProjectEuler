@@ -38,7 +38,7 @@ void ProjectEuler025(){
 
     unsigned int index = 2;
 
-    while(c.size < 1000){
+    while(c.length() < 1000){
         c = a + b;
 
         a = b;
