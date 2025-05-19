@@ -14,9 +14,10 @@ BigInteger& BigInteger::operator=(int n){
 BigInteger& BigInteger::operator=(long long n){
     memset(value, 0, sizeof(value));
 
-    isNegative = n < 0;
-    if(isNegative){
+    sign = '\0';
+    if(n < 0){
         n *= -1LL;
+        sign = '-';
     }
 
     size = 0;
@@ -31,7 +32,7 @@ BigInteger& BigInteger::operator=(long long n){
 BigInteger& BigInteger::operator=(unsigned long long n){
     memset(value, 0, sizeof(value));
 
-    isNegative = false;
+    sign = '\0';
 
     size = 0;
     do{
@@ -45,7 +46,7 @@ BigInteger& BigInteger::operator=(unsigned long long n){
 BigInteger& BigInteger::operator=(const BigInteger& bI){
     memset(value, 0, sizeof(value));
 
-    isNegative = bI.isNegative;
+    sign = bI.sign;
     this->size = bI.size;
 
     for(unsigned int i = 0; i < size; i++){
@@ -58,9 +59,11 @@ BigInteger& BigInteger::operator=(const BigInteger& bI){
 BigInteger& BigInteger::operator=(const string& str){
     memset(value, 0, sizeof(value));
 
-    isNegative = false;
+    sign = '\0';
+    bool isNegative = false;
     if('-' == *str.begin()){
         isNegative = true;
+        sign = '-';
     }
 
     size = 0;
@@ -78,7 +81,7 @@ BigInteger& BigInteger::operator=(const string& str){
 }
 
 const BigInteger BigInteger::operator+(const BigInteger& bI){
-    if(isNegative != bI.isNegative){
+    if(sign != bI.sign){
         throw std::runtime_error("TODO: operator- not implemented");
     }
 
@@ -146,9 +149,8 @@ string BigInteger::ToString() const {
         s = to_string(value[i]) + s;
     }
 
-    if(isNegative){
+    if(sign == '-')
         s = "-" + s;
-    }
 
     return s;
 }
@@ -163,27 +165,27 @@ void BigInteger::PerformIntegrationTests(){
     BigInteger big_2;
 
     assert(big.size == 1);
-    assert(big.isNegative == false);
+    assert(big.sign == '\0');
     assert(big.ToString() == "0");
 
     big = -25;
     assert(big.size == 2);
-    assert(big.isNegative == true);
+    assert(big.sign == '-');
     assert(big.ToString() == "-25");
 
     big = 18446744073709551612ULL;
     assert(big.size == 20);
-    assert(big.isNegative == false);
+    assert(big.sign == '\0');
     assert(big.ToString() == "18446744073709551612");
 
     big = "-88370351051124936122493198378815695858127594672917553146825";
     assert(big.size == 59);
-    assert(big.isNegative == true);
+    assert(big.sign == '-');
     assert(big.ToString() == "-88370351051124936122493198378815695858127594672917553146825");
 
     big_2 = big;
     assert(big_2.size == 59);
-    assert(big_2.isNegative == true);
+    assert(big_2.sign == '-');
     assert(big_2.ToString() == "-88370351051124936122493198378815695858127594672917553146825");
 
     big = "88370351051124936122493198378815695858127594672917553146825";
@@ -191,7 +193,7 @@ void BigInteger::PerformIntegrationTests(){
 
     BigInteger sum = big + big_2;
     assert(sum.size == 59);
-    assert(sum.isNegative == false);
+    assert(sum.sign == '\0');
     assert(sum.ToString() == "88370351051124936122493198977273453327985075066374330629248");
 
     big = "598457757469857480393456777482423";
@@ -199,7 +201,7 @@ void BigInteger::PerformIntegrationTests(){
 
     sum = big + big_2;
     assert(sum.size == 59);
-    assert(sum.isNegative == false);
+    assert(sum.sign == '\0');
     assert(sum.ToString() == "88370351051124936122493198977273453327985075066374330629248");
 
     big = "88370351051124936122493198378815695858127594672917553146825";
@@ -207,6 +209,6 @@ void BigInteger::PerformIntegrationTests(){
 
     sum = big + big_2;
     assert(sum.size == 60);
-    assert(sum.isNegative == false);
+    assert(sum.sign == '\0');
     assert(sum.ToString() == "176740702102249872244986396757631391716255189345835106293650");
 }

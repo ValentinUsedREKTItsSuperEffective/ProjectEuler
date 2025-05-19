@@ -8,7 +8,7 @@ using namespace std;
 class BigInteger{
     public:
         unsigned char value[2000];
-        bool isNegative = false;
+        unsigned char sign = '\0'; // empty char
         unsigned size = 1;
 
         BigInteger& operator=(int n);
