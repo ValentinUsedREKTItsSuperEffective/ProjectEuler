@@ -10,6 +10,9 @@ class BigInteger{
         unsigned char value[2000]; // Todo: unsigned long long instead of unsigned char to reduce operation and complexity
         unsigned char sign = '\0'; // empty char
 
+        BigInteger();
+        BigInteger(unsigned);
+
         BigInteger& operator=(int n);
         BigInteger& operator=(unsigned n);
         BigInteger& operator=(long long n);
@@ -17,7 +20,9 @@ class BigInteger{
         BigInteger& operator=(const BigInteger& bI);
         BigInteger& operator=(const string& bI);
 
-        const BigInteger operator+(const BigInteger& bI);
+        BigInteger operator+(const BigInteger& bI);
+        void operator+=(const BigInteger&);
+        BigInteger operator*(const unsigned);
         void operator*=(int n);
 
         // Idea for comparison operators :
@@ -25,6 +30,8 @@ class BigInteger{
         bool operator<(const BigInteger& bI);
         friend bool operator<(BigInteger& l, const BigInteger& r);
         friend bool operator<(const BigInteger& l, const BigInteger& r);
+
+        void Swap(BigInteger&);
 
         unsigned length();
 

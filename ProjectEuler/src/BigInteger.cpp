@@ -2,8 +2,26 @@
 #include <iostream>
 #include <cstring>
 #include <cassert>
+#include <algorithm>
 
 using namespace std;
+
+BigInteger::BigInteger(){
+    memset(value, 0, sizeof(value));
+    sign = '\0';
+    size = 1;
+}
+
+BigInteger::BigInteger(unsigned n){
+    memset(value, 0, sizeof(value));
+    sign = '\0';
+
+    size = 0;
+    do{
+        value[size++] = n % 10;
+        n /= 10;
+    } while(n > 0);
+}
 
 BigInteger& BigInteger::operator=(int n){
     *this = static_cast<long long>(n);
@@ -86,30 +104,38 @@ BigInteger& BigInteger::operator=(const string& str){
     return *this;
 }
 
-const BigInteger BigInteger::operator+(const BigInteger& bI){
+BigInteger BigInteger::operator+(const BigInteger& bI){
     if(sign != bI.sign){
         throw std::runtime_error("TODO: operator- not implemented");
     }
 
     BigInteger r = *this;
+    r += bI;
+    return r;
+}
 
-    if(bI.size > size){
-        r.size = bI.size;
+void BigInteger::operator+=(const BigInteger& o){;
+    if(o.size > size){
+        size = o.size;
     }
 
     unsigned char ret = 0;
-    for(unsigned i = 0; i < bI.size; i++){
-        r.value[i] += bI.value[i] + ret;
-        ret = r.value[i] / 10;
-        r.value[i] %= 10;
+    for(unsigned i = 0; i < o.size; i++){
+        value[i] += o.value[i] + ret;
+        ret = value[i] / 10;
+        value[i] %= 10;
     }
 
     while(ret > 0){
-        r.value[r.size++] = ret % 10;
+        value[size++] = ret % 10;
         ret /= 10;
     }
+}
 
-    return r;
+BigInteger BigInteger::operator*(const unsigned n){
+    BigInteger product = *this;
+    product *= 2;
+    return product;
 }
 
 void BigInteger::operator*=(int n){
@@ -147,6 +173,16 @@ bool operator<(BigInteger& l, const BigInteger& r){
 
 bool operator<(const BigInteger& l, const BigInteger& r){
     return const_cast<BigInteger&>(l).operator <(r);
+}
+
+void BigInteger::Swap(BigInteger& o){
+    unsigned maxSize = size > o.size ? size : o.size;
+    std::swap(size, o.size);
+    std::swap(sign, o.sign);
+
+    for(unsigned i = 0; i < maxSize; i++){
+        std::swap(value[i], o.value[i]);
+    }
 }
 
 unsigned BigInteger::length(){
