@@ -6,7 +6,7 @@
 
 #include "ProjectEuler001.hpp"
 
- #define TEST
+// #define TEST
 #ifdef TEST
 #include "BigInteger.hpp"
 #endif // TEST
