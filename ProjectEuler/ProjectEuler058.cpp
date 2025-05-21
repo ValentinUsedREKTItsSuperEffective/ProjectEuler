@@ -49,7 +49,7 @@ void ProjectEuler058(){
         return;
     }
 
-    vector<unsigned> primes = PEUtility::EratostheneSieve(sieveLimit);
+    auto primes = PEUtility::EratostheneSieve(sieveLimit);
     auto primeIterator = primes.begin();
 
     unsigned primeCounter = 0;
