@@ -9,7 +9,7 @@ For example, 2143 is a 4-digit pandigital and is also prime.
 
 What is the largest n-digit pandigital prime that exists?
 
-Answer: 7652413 (347.747ms)
+Answer: 7652413 (251.834ms [21/05/2025]) <- (347.747ms)
 
 Tags: Pandigital
 */
@@ -22,7 +22,7 @@ Thus, I just have to compute prime up 7654321 instead.
 */
 
 void ProjectEuler041(){
-    vector<unsigned>& primes = PEUtility::EratostheneSieve(7654321);
+    auto primes = PEUtility::EratostheneSieve(7654321);
 
     for(auto it = primes.rbegin(); it != primes.rend(); ++it){
         if (PEUtility::IsPandigital(*it)) {
