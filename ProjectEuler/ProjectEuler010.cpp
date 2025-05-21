@@ -24,9 +24,8 @@ void ProjectEuler010(){
 
         sum = 0LL;
 
-        for(unsigned int j = 0; primes[j] < n && j < primes.size(); j++){
-            sum += primes[j];
-            //cout << j << " : / " <<  primes.size() << " + " << primes[j] << " = " << sum << endl;
+        for(auto it = primes.begin(); *it < n && it != primes.end(); it++){
+            sum += *it;
         }
 
         cout << sum << endl;
