@@ -23,7 +23,7 @@ Considering quadratics of the form:
 
 Find the product of the coefficients, a and b, for the quadratic expression that produces the maximum number of primes for consecutive values of n, starting with n = 0.
 
-Answer: -59231
+Answer: -59231 (128.414ms)
 */
 
 /*
@@ -56,14 +56,14 @@ int quadratic(int a, int b, int n){
 }
 
 void ProjectEuler027(){
-    auto primes = PEUtility::EratostheneSieve(100000);
+    auto primes = PEUtility::EratostheneSieve(1000);
 
     int coefProduct = 41; // for a = 1 & b = 41 ...
     unsigned int maxConsecutiveN = 39; // ... maximum n is 39
 
     for(int a = -999; a < 1000; a++){
-        for(int i = 0; primes[i] < 1000; i++){ // (1)
-            int b = primes[i];
+        for(auto it = primes.begin(); it != primes.end(); it++){ // (1)
+            int b = *it;
             float discriminant = a * a - 4 * b;
 
             int lRoot = 0, rRoot = 0;

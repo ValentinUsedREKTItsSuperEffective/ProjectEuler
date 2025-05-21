@@ -39,7 +39,7 @@ void ProjectEuler023();
 void ProjectEuler024();
 void ProjectEuler025();
 void ProjectEuler026();
-void ProjectEuler027();
+void ProjectEuler027(); // Require a clear of the prime sieve otherwise testing 027 takes ages
 void ProjectEuler028();
 void ProjectEuler029();
 void ProjectEuler030();
