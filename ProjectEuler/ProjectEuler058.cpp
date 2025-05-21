@@ -50,7 +50,6 @@ void ProjectEuler058(){
     vector<unsigned> primes = PEUtility::EratostheneSieve(sieveLimit);
     auto primeIterator = primes.begin();
 
-    // Assuming we are using four layer as start
     unsigned primeCounter = 0;
     unsigned counter = 1;
     unsigned corner = 1;
