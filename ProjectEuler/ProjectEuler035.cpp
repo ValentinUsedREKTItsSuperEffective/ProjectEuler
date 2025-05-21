@@ -15,7 +15,7 @@ There are thirteen such primes below 100: 2, 3, 5, 7, 11, 13, 31. 37. 71. 73, 79
 
 How many circular primes are there below one million?
 
-Answer: 55 (146.577ms)
+Answer: 55 (111.613ms [21/05/2025]) <- (146.577ms)
 
 Tags: Prime
 */
@@ -24,7 +24,7 @@ void ProjectEuler035(){
     unsigned int result = 0;
 
     // Pre-compute prime numbers
-    vector<unsigned int> primes = PEUtility::EratostheneSieve(1000000);
+    auto primes = PEUtility::EratostheneSieve(1000000);
 
     // Map prime for easier search after
     map<unsigned int, char> primesMap;
