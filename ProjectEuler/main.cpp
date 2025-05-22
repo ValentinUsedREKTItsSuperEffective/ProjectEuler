@@ -71,6 +71,7 @@ void ProjectEuler055();
 void ProjectEuler056();
 unsigned ProjectEuler057();
 void ProjectEuler058();
+void ProjectEuler059();
 
 int main(){
 #ifdef TEST
@@ -137,7 +138,7 @@ int main(){
 
     std::chrono::steady_clock::time_point startTimePoint = std::chrono::steady_clock::now();
 
-    ProjectEuler058();
+    ProjectEuler059();
 
     std::chrono::steady_clock::time_point endTimePoint = std::chrono::steady_clock::now();
     cout << "Elapsed time: " << std::chrono::duration_cast<std::chrono::microseconds>(endTimePoint - startTimePoint).count() / 1000.0 << "ms\n";
