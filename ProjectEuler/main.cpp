@@ -72,6 +72,7 @@ void ProjectEuler056();
 unsigned ProjectEuler057();
 void ProjectEuler058();
 void ProjectEuler059();
+void ProjectEuler060();
 
 int main(){
 #ifdef TEST
@@ -133,12 +134,13 @@ int main(){
     assert(PEUtility::IsPrime(10845) == false);
     assert(PEUtility::IsPrime(11025) == false);
     assert(PEUtility::IsPrime(11265) == false);
+    assert(PEUtility::IsPrime(673109) == true);
     cout << "===== End Tests =====\n";
 #endif // TEST
 
     std::chrono::steady_clock::time_point startTimePoint = std::chrono::steady_clock::now();
 
-    ProjectEuler059();
+    ProjectEuler060();
 
     std::chrono::steady_clock::time_point endTimePoint = std::chrono::steady_clock::now();
     cout << "Elapsed time: " << std::chrono::duration_cast<std::chrono::microseconds>(endTimePoint - startTimePoint).count() / 1000.0 << "ms\n";
