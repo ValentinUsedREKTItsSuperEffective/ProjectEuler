@@ -54,12 +54,16 @@ bool PEUtility::IsPrime(unsigned N){
         throw std::length_error("Primes has not been initialized");
     }
 
+    if(N == 1){
+        return false;
+    }
+
     for(unsigned prime: Primes){
-        if (prime > N){
+        if (N % prime == 0){
             return false;
         }
 
-        if (prime == N){
+        if (prime * prime >= N){
             return true;
         }
     }
