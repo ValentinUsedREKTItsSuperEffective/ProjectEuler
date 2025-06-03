@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <array>
 
 using namespace std;
 
@@ -22,118 +21,188 @@ The ordered set of three 4-digit numbers: 8128, 2882, 8281, has three interestin
 
 Find the sum of the only ordered set of six cyclic 4-digit numbers for which each polygonal type: triangle, square, pentagonal, hexagonal, heptagonal, and octagonal, is represented by a different number in the set.
 
-Answer:
+Answer: 28684 (3.323ms)
 */
 
-/*
-Thoughts:
-From 044 and 045, we know that
+unsigned Triangle(unsigned n){
+    return n*(n+1)/2;
+}
 
-    T_n+1   = T_n + n + 1
-    P_n+1   = P_n + 3n + 1
-    Hex_n+1 = Hex_n + 4n + 1
+unsigned Square(unsigned n){
+    return n*n;
+}
 
-The others:
+unsigned Pentagonal(unsigned n){
+    return n*(3*n-1)/2;
+}
 
-    S_n+1   =   (n+1)^2
-            =   n^2 + 2n + 1
-            =   S_n + 2n + 1
-    (easier and optimize to just do n+1 then n*n)
+unsigned Hexagonal(unsigned n){
+    return n*(2*n-1);
+}
 
-    Hep_n+1 =   (n+1)(5(n+1) - 3)/2
-            =   (5(n+1)^2 - 3(n+1))/2
-            =   (5(n^2 + 2n + 1) - 3(n+1))/2
-            =   (5n^2 + 10n + 5 - 3n - 3)/2
-            =   (5n^2 - 3n)/2 + (10n + 5 - 3)/2
-            =   n(5n - 3)/2 + (10n + 2)/2
-            =   Hep_n + (10n + 2)/2
-            =   Hep_n + 5n + 1
+unsigned Heptagonal(unsigned n){
+    return n*(5*n-3)/2;
+}
 
-    O_n+1   =   (n+1)(3(n+1) - 2)
-            =   3(n+1)^2 - 2(n+1)
-            =   3(n^2 + 2n + 1) - 2(n+1)
-            =   3n^2 + 6n + 3 - 2n - 2
-            =   3n^2 - 2n + 6n + 1
-            =   n(3n - 2) + 6n + 1
-            =   O_n + 6n + 1
+unsigned Octagonal(unsigned n){
+    return n*(3*n-2);
+}
 
-In the end, we have
+enum class FigurateType : unsigned char {
+    Triangle = 1,
+    Square = 2,
+    Pentagonal = 4,
+    Hexagonal = 8,
+    Heptagonal = 16,
+    Octagonal = 32
+};
 
-    T_n+1   = T_n   +  n + 1
-    S_n+1   = S_n   + 2n + 1
-    P_n+1   = P_n   + 3n + 1
-    Hex_n+1 = Hex_n + 4n + 1
-    Hep_n+1 = Hep_n + 5n + 1
-    O_n+1   = O_n   + 6n + 1
+struct Node {
+    unsigned char type = 0;
+    unsigned prefix = 0;
+    unsigned suffix = 0;
 
-*/
+    vector<const Node*> nexts = {};
+};
+
+void BuildLinks(vector<Node>& graph){
+    for(Node& current: graph){
+        for(Node& other: graph){
+            if(current.type == other.type){
+                continue;
+            }
+
+            if(current.prefix == other.suffix){
+                other.nexts.push_back(&current);
+            }
+
+            if(other.prefix == current.suffix){
+                current.nexts.push_back(&other);
+            }
+        }
+    }
+}
+
+bool Browse(const Node* node, const unsigned char cycle, const unsigned char firstPrefix, unsigned& sum){
+    constexpr unsigned char fullCycle = 1 + 2 + 4 + 8 + 16 + 32;
+    if(cycle == fullCycle && node->suffix == firstPrefix){
+        return true;
+    }
+
+    for(const Node* next: node->nexts){
+        if((next->type & cycle) == 0){ // didn't encounter this figurate type on the cycle
+            if(Browse(next, cycle + next->type, firstPrefix, sum)){
+                sum += next->suffix + 100*next->prefix;
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 void ProjectEuler061(){
-    vector<unsigned> triangles = {0};
-    vector<unsigned> squares = {0};
-    vector<unsigned> pentagonals = {0};
-    vector<unsigned> hexagonals = {0};
-    vector<unsigned> heptagonals = {0};
-    vector<unsigned> octogonals = {0};
+    vector<Node> graph = {};
 
     unsigned n = 0;
+    unsigned Pn = 0;
     while(true){
-        unsigned nextT = *triangles.rbegin() + n + 1;
-        unsigned nextS = *squares.rbegin() + 2*n + 1;
-        unsigned nextP = *pentagonals.rbegin() + 3*n + 1;
-        unsigned nextHex = *hexagonals.rbegin() + 4*n + 1;
-        unsigned nextHep = *heptagonals.rbegin() + 5*n + 1;
-        unsigned nextO = *octogonals.rbegin() + 6*n + 1;
-        n++;
-
-        if(nextT < 1000){
-            triangles[0] = nextT;
-        } else {
-            if(nextT > 10000){
-                // It will break at 10000 = n(n+1)/2 -> n ~= 141, thus way later than 10000 = n^2 -> n = 100
-                break;
-            }
-
-            triangles.push_back(nextT);
+        Pn = Triangle(n++);
+        if(Pn < 1000){
+            continue;
         }
 
-        if(nextS < 1000){
-            squares[0] = nextS;
-        } else {
-            if(nextS < 10000){
-                squares.push_back(nextS);
-            }
+        if(Pn > 9999){
+            break;
         }
 
-        if(nextP < 1000){
-            pentagonals[0] = nextP;
-        } else {
-            if(nextP < 10000){
-                pentagonals.push_back(nextP);
-            }
+        Node node = {static_cast<unsigned char>(FigurateType::Triangle), Pn/100, Pn%100};
+        graph.push_back(node);
+    }
+
+    n = 0;
+    while(true){
+        Pn = Square(n++);
+        if(Pn < 1000){
+            continue;
         }
 
-        if(nextHex < 1000){
-            hexagonals[0] = nextHex;
-        } else {
-            if(nextHex < 10000){
-                hexagonals.push_back(nextHex);
-            }
+        if(Pn > 9999){
+            break;
         }
 
-        if(nextHep < 1000){
-            heptagonals[0] = nextHep;
-        } else {
-            if(nextHep < 10000){
-                heptagonals.push_back(nextHep);
-            }
+        Node node = {static_cast<unsigned char>(FigurateType::Square), Pn/100, Pn%100};
+        graph.push_back(node);
+    }
+
+    n = 0;
+    while(true){
+        Pn = Pentagonal(n++);
+        if(Pn < 1000){
+            continue;
         }
 
-        if(nextO < 1000){
-            octogonals[0] = nextO;
-        } else {
-            if(nextO < 10000){
-                octogonals.push_back(nextO);
-            }
+        if(Pn > 9999){
+            break;
+        }
+
+        Node node = {static_cast<unsigned char>(FigurateType::Pentagonal), Pn/100, Pn%100};
+        graph.push_back(node);
+    }
+
+    n = 0;
+    while(true){
+        Pn = Hexagonal(n++);
+        if(Pn < 1000){
+            continue;
+        }
+
+        if(Pn > 9999){
+            break;
+        }
+
+        Node node = {static_cast<unsigned char>(FigurateType::Hexagonal), Pn/100, Pn%100};
+        graph.push_back(node);
+    }
+
+    n = 0;
+    while(true){
+        Pn = Heptagonal(n++);
+        if(Pn < 1000){
+            continue;
+        }
+
+        if(Pn > 9999){
+            break;
+        }
+
+        Node node = {static_cast<unsigned char>(FigurateType::Heptagonal), Pn/100, Pn%100};
+        graph.push_back(node);
+    }
+
+    n = 0;
+    while(true){
+        Pn = Octagonal(n++);
+        if(Pn < 1000){
+            continue;
+        }
+
+        if(Pn > 9999){
+            break;
+        }
+
+        Node node = {static_cast<unsigned char>(FigurateType::Octagonal), Pn/100, Pn%100};
+        graph.push_back(node);
+    }
+
+    BuildLinks(graph);
+
+    unsigned sum = 0;
+    for(const Node& node : graph){
+        if(Browse(&node, node.type, node.prefix, sum)){
+            sum += (node.prefix * 100 + node.suffix);
+            cout << sum << "\n";
+            return;
         }
     }
 }
