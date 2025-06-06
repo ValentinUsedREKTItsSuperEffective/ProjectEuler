@@ -1,5 +1,5 @@
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <algorithm>
 
 using namespace std;
@@ -10,7 +10,7 @@ In fact, 41063625 is the smallest cube which has exactly three permutations of i
 
 Find the smallest cube for which exactly five permutations of its digits are cube.
 
-Answer: 127035954683 (12.877ms)
+Answer: 127035954683 (12.877ms) -> (8.393ms [Use unordered_map instead of map])
 */
 
 /*
@@ -33,7 +33,7 @@ struct PermutationCounter{
 };
 
 void ProjectEuler062(){
-    map<string, PermutationCounter> permutations = {};
+    unordered_map<string, PermutationCounter> permutations = {};
     for(unsigned long long i = 345; true; i++){
         unsigned long long cube = i*i*i;
         string n = std::to_string(cube);
